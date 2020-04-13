@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+@SuppressWarnings("unchecked")
 public class DetectiveNotes extends JDialog {
 
     JPanel people;

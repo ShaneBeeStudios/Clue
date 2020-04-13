@@ -1,29 +1,37 @@
 package com.shanebeestudios.clue.player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Set;
-
 import com.shanebeestudios.clue.ClueGame;
-import com.shanebeestudios.clue.misc.Card;
-import com.shanebeestudios.clue.misc.Card.CardType;
-
 import com.shanebeestudios.clue.board.Board;
 import com.shanebeestudios.clue.board.BoardCell;
 import com.shanebeestudios.clue.board.RoomCell;
+import com.shanebeestudios.clue.misc.Card;
+import com.shanebeestudios.clue.misc.Card.CardType;
 import com.shanebeestudios.clue.misc.Solution;
 import com.shanebeestudios.clue.misc.Suggestion;
-import com.shanebeestudios.clue.player.Player;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class ComputerPlayer extends Player {
 
     private char lastRoomVisited;
     private Suggestion accusation;
 
-    public Suggestion createSuggestion(int row, int column, ArrayList<Card> deck, Board board) {
+    public ComputerPlayer(String name, Color color, int row, int column) {
+        super(name, color, row, column);
+        accusation = null;
+    }
+
+    public ComputerPlayer() {
+        super();
+    }
+
+    public Suggestion createSuggestion(int row, int column, List<Card> deck, Board board) {
         Suggestion suggestion = new Suggestion();
         String room = board.getRooms().get(board.getRoomCellAt(row, column).getRoomClassifier());
         suggestion.setRoom(new Card(room, CardType.ROOM));
@@ -33,8 +41,8 @@ public class ComputerPlayer extends Player {
         return suggestion;
     }
 
-    public Card findValidCard(ArrayList<Card> deck, CardType type) {
-        ArrayList<Card> knownCards = this.getKnownCards();
+    public Card findValidCard(List<Card> deck, CardType type) {
+        List<Card> knownCards = this.getKnownCards();
         for (Card x : deck) {
             if (x.getCardType().equals(type) && !knownCards.contains(x)) {
                 return x;
@@ -105,15 +113,6 @@ public class ComputerPlayer extends Player {
         if (game.checkAccusation(solution)) {
             JOptionPane.showMessageDialog(game, "Computer wins! It was " + accusation.getPerson().getName() + " in the " + accusation.getRoom().getName() + " with the " + accusation.getWeapon().getName() + ". The game will now exit.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
         }
-    }
-
-    public ComputerPlayer(String name, String color, int row, int column) {
-        super(name, color, row, column);
-        accusation = null;
-    }
-
-    public ComputerPlayer() {
-        super();
     }
 
     public void updateSeen(Card seen) {

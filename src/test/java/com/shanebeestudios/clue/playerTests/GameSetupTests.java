@@ -1,15 +1,16 @@
 package com.shanebeestudios.clue.playerTests;
 
-import junit.framework.Assert;
-
 import com.shanebeestudios.clue.misc.Card.CardType;
 import com.shanebeestudios.clue.ClueGame;
-import com.shanebeestudios.clue.misc.ComputerPlayer;
+import com.shanebeestudios.clue.player.ComputerPlayer;
 import com.shanebeestudios.clue.player.HumanPlayer;
 import com.shanebeestudios.clue.player.Player;
 import com.shanebeestudios.clue.misc.Card;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.awt.*;
 
 public class GameSetupTests {
 	
@@ -17,18 +18,18 @@ public class GameSetupTests {
 
 	@Before
 	public void setup() {
-		testGame = new ClueGame("legend.txt", "RoomLayout.csv", "players.txt", "weapons.txt");
+		testGame = new ClueGame("RoomLayout.csv");
 	}
 	
 	// Each tests name, color, starting location
 	@Test
 	public void testLoadingPeople() {
 		testGame.loadPeople();
-		Assert.assertEquals(new HumanPlayer("Miss Scarlet","Red",19,11), testGame.getHumanPlayer());
+		Assert.assertEquals(new HumanPlayer("Miss Scarlet", Color.RED,19,11), testGame.getHumanPlayer());
 		// Tests person at beginning
-		Assert.assertEquals(new ComputerPlayer("Colonel Mustard","Orange",0,19), testGame.getCpuPlayers().get(1));
+		Assert.assertEquals(new ComputerPlayer("Colonel Mustard",Color.ORANGE,0,19), testGame.getCpuPlayers().get(1));
 		// Tests person at end
-		Assert.assertEquals(new ComputerPlayer("Mrs. White","White",0,6), testGame.getCpuPlayers().get(3));
+		Assert.assertEquals(new ComputerPlayer("Mrs. White",Color.WHITE,0,6), testGame.getCpuPlayers().get(3));
 	}
 	
 	@Test

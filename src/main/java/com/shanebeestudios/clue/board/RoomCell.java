@@ -9,6 +9,7 @@ package com.shanebeestudios.clue.board;
 import java.awt.Color;
 import java.awt.Graphics;
 
+@SuppressWarnings({"unused", "deprecation"})
 public class RoomCell extends BoardCell {
 
     private String roomName;
@@ -18,7 +19,8 @@ public class RoomCell extends BoardCell {
         // Declaration of the enum. Done such that the direction also tells which way the player should move on the com.shanebeestudios.clue.board
         NONE(0, 0), UP(-1, 0), DOWN(1, 0), LEFT(0, -1), RIGHT(0, 1);
 
-        private int x, y;
+        private final int x;
+        private final int y;
 
         DoorDirection(int X, int Y) {
             x = X;
@@ -37,7 +39,7 @@ public class RoomCell extends BoardCell {
 
     private boolean isDoor = false; // Start with this cell not being a door
     private DoorDirection doorDirection; // Instantiate a blank door direction
-    private char roomClassifier; // Create a blank classifier
+    private final char roomClassifier; // Create a blank classifier
     private boolean drawName = false;
 
     public RoomCell(String roomName) {

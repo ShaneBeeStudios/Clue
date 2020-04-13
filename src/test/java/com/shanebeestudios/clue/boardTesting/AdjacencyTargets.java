@@ -4,8 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -16,7 +15,7 @@ public class AdjacencyTargets {
 	public static Board newBoard;
 	@BeforeClass
 	public static void doOnce() throws Exception {
-		newBoard = new Board("RoomLayout.csv", "legend.txt");
+		newBoard = new Board("RoomLayout.csv");
 		//newBoard.loadConfigFiles();
 		//newBoard.calcAdjacencies();
 	}

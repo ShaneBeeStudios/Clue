@@ -14,10 +14,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -26,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.shanebeestudios.clue.ClueGame;
+import com.shanebeestudios.clue.game.Rooms;
 import com.shanebeestudios.clue.player.HumanPlayer;
 import com.shanebeestudios.clue.player.Player;
 import com.shanebeestudios.clue.misc.SuggestDialog;
@@ -37,11 +40,7 @@ public class Board extends JPanel implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private ArrayList<Player> players;
-	public void setPlayers(ArrayList<Player> players) {
-		this.players = players;
-		humanPlayer = players.get(0);
-	}
+	private List<Player> players;
 	private ArrayList<BoardCell> cells;
 	private Map<Character,String> rooms;
 	private int numRows;
@@ -51,7 +50,7 @@ public class Board extends JPanel implements MouseListener {
 	private int pixelModifier;
 
 	// Filepaths for the configuration files
-	private String csvFilepath, legendFilepath;
+	private String csvFilepath;
 
 	// Array used to keep track of visited cells when the fucntion calcAdjacencies is called
 	private boolean visited[];
@@ -66,22 +65,21 @@ public class Board extends JPanel implements MouseListener {
 		initialize();
 	}
 	
-	public Board(String csv, String legend, ClueGame game) {
-		this(csv, legend);
+	public Board(String csv, ClueGame game) {
+		this(csv);
 		this.game = game;
 	}
 
 	// Parameterized constructor, sets all the fields of com.shanebeestudios.clue.board using the configuration files
-	public Board(String csv, String legend) {
+	public Board(String csv) {
 		addMouseListener(this);
 		setSize(700,700);
 		initialize();
 		csvFilepath = csv;
-		legendFilepath = legend;
 
 		humanMustFinish = true;
-		adjacencyLists = new HashMap<Integer, LinkedList<Integer>>();
-		targets = new HashSet<BoardCell>();
+		adjacencyLists = new HashMap<>();
+		targets = new HashSet<>();
 
 		loadConfigFiles();
 		calcAdjacencies();
@@ -166,10 +164,10 @@ public class Board extends JPanel implements MouseListener {
 	
 	// Initializes default values of cells, rooms, numRows, and numColumns
 	private void initialize() {
-		cells = new ArrayList<BoardCell>();
-		rooms = new HashMap<Character, String>();
-		adjacencyLists = new HashMap<Integer, LinkedList<Integer>>();
-		targets = new HashSet<BoardCell>();
+		cells = new ArrayList<>();
+		rooms = new HashMap<>();
+		adjacencyLists = new HashMap<>();
+		targets = new HashSet<>();
 		numRows = 0;
 		numColumns = 0;
 	}
@@ -190,25 +188,9 @@ public class Board extends JPanel implements MouseListener {
 	// Throws: BadConfigFormatException
 	// Loads up the legend file, and populates the legend in the com.shanebeestudios.clue.board
 	public void loadRoomConfig() throws BadConfigFormatException  {
-		Scanner legendFile = null;
-		try {
-			legendFile = new Scanner(new File(legendFilepath));
-		} catch (FileNotFoundException e) {
-			// If we can't find the legend, throw an I/O exception under the BadConfigFormatException
-			throw new BadConfigFormatException("I/O Error: " + legendFilepath + "not found!");
-		}
-		String[] legendSplit;
-
-		while(legendFile.hasNextLine()) {
-			legendSplit = legendFile.nextLine().split(", ");
-			// If the line has more than one comma, throw an exception
-			if(legendSplit.length > 2) {
-				throw new BadConfigFormatException(legendFilepath + " contains data in an invalid format");
-			}
-			// Create a room definition using the legend information and put it into rooms 
-			rooms.put(legendSplit[0].charAt(0), legendSplit[1]);
-		}
-		legendFile.close();
+		for (Rooms room : Rooms.values()) {
+		    rooms.put(room.getKey(), room.getName());
+        }
 	}
 
 	// Second heavy lifter function for the loadConfigFiles method
@@ -216,33 +198,30 @@ public class Board extends JPanel implements MouseListener {
 	// Load up the config for the com.shanebeestudios.clue.board, and create the cells
 	public void loadBoardConfig() throws BadConfigFormatException {
 		Scanner csvFile = null;
-		try {
-			// Attempt to create the scanner on the csv file
-			csvFile = new Scanner(new File(csvFilepath));
-		} catch (FileNotFoundException e) {
-			// If something goes wrong, throw an exception
-			throw new BadConfigFormatException("csv Filepath was invalid");
-		}
-		String csvLine;
+        // Attempt to create the scanner on the csv file
+        InputStream s = ClueGame.class.getClassLoader().getResourceAsStream(csvFilepath);
+        csvFile = new Scanner(s);
+        String csvLine;
 		String[] csvSplit;
 
 		while(csvFile.hasNextLine()) {
 			csvLine = csvFile.nextLine();
 			csvSplit = csvLine.split(",");
 			++numRows;
-			for(int i = 0; i < csvSplit.length; ++i) {
+            for (String value : csvSplit) {
 
-				// If the classifier is a w, make a new walkway cell
-				if(csvSplit[i].charAt(0) == 'W') { 
-					cells.add(new WalkwayCell());
-				} 
-				// Otherwise, it must be a room cell, or an invalid cell
-				else {
-					// If we can't find this cell type in the legend, throw an exception
-					if(!rooms.containsKey(csvSplit[i].charAt(0))) throw new BadConfigFormatException("Unrecognized room detected" + csvSplit[i].charAt(0));
-					cells.add(new RoomCell(csvSplit[i]));
-				}
-			}
+                // If the classifier is a w, make a new walkway cell
+                if (value.charAt(0) == 'W') {
+                    cells.add(new WalkwayCell());
+                }
+                // Otherwise, it must be a room cell, or an invalid cell
+                else {
+                    // If we can't find this cell type in the legend, throw an exception
+                    if (!rooms.containsKey(value.charAt(0)))
+                        throw new BadConfigFormatException("Unrecognized room detected" + value.charAt(0));
+                    cells.add(new RoomCell(value));
+                }
+            }
 		}
 
 		// Calculate the number of columns from the rows and amount of cells
@@ -284,7 +263,7 @@ public class Board extends JPanel implements MouseListener {
 
 		for (int i = 0; i < numRows; ++i) {
 			for (int j = 0; j < numColumns; ++j) {
-				adjacency = new LinkedList<Integer>();
+				adjacency = new LinkedList<>();
 				if(cells.get(calcIndex(i,j)).isDoorway()) {
 					RoomCell thisCell = (RoomCell) cells.get(calcIndex(i,j));
 					adjacency.add(calcIndex(i + thisCell.getDoorDirection().getX(), j + thisCell.getDoorDirection().getY()));
@@ -325,7 +304,7 @@ public class Board extends JPanel implements MouseListener {
 
 	// Start targets uses calcTargets to calculate the correct targets for moving in the game
 	public void startTargets(int location, int steps) {
-		targets = new HashSet<BoardCell>();
+		targets = new HashSet<>();
 		visited[location] = true;
 		calcTargets(location, steps);
 		visited[location] = false;
@@ -334,7 +313,7 @@ public class Board extends JPanel implements MouseListener {
 	// Does the heavy lifting for startTargets, populates the targets list for a current location given a number of steps
 	private void calcTargets(int location, int steps) {
 
-		LinkedList<Integer> adjacentCells = new LinkedList<Integer>();
+		LinkedList<Integer> adjacentCells = new LinkedList<>();
 
 		for(int adjCell : adjacencyLists.get(location)) {
 			if(visited[adjCell] == false) {
@@ -363,6 +342,11 @@ public class Board extends JPanel implements MouseListener {
 			return null;
 		}
 	}
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+        humanPlayer = players.get(0);
+    }
 
 	public BoardCell getCellAt(int row, int column) {
 		return cells.get(calcIndex(row, column));

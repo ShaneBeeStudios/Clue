@@ -2,23 +2,22 @@ package com.shanebeestudios.clue.playerTests;
 
 import static org.junit.Assert.*;
 
+import java.awt.*;
 import java.util.ArrayList;
-import junit.framework.Assert;
 
 import com.shanebeestudios.clue.misc.Card;
 import com.shanebeestudios.clue.ClueGame;
-import com.shanebeestudios.clue.misc.ComputerPlayer;
+import com.shanebeestudios.clue.player.ComputerPlayer;
 import com.shanebeestudios.clue.player.HumanPlayer;
 import com.shanebeestudios.clue.misc.Solution;
 import com.shanebeestudios.clue.misc.Suggestion;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.shanebeestudios.clue.board.Board;
 import com.shanebeestudios.clue.board.BoardCell;
-
-
 
 public class GameActionTests {
 	private static ClueGame game;
@@ -33,7 +32,7 @@ public class GameActionTests {
 	@Before
 	public void setUp() {
 		
-		game = new ClueGame("legend.txt", "RoomLayout.csv", "players.txt", "weapons.txt");
+		game = new ClueGame("RoomLayout.csv");
 		board = game.getBoard();
 		//com.shanebeestudios.clue.board = new Board("RoomLayout.csv","legend.txt");
 		//com.shanebeestudios.clue.board.loadConfigFiles();
@@ -223,20 +222,20 @@ public class GameActionTests {
 	@Test
 	public void testDisprovingSuggestion() {
 		// Computer Player
-		ComputerPlayer playerOne = new ComputerPlayer("PlayerOne", "red", 0, 0);
+		ComputerPlayer playerOne = new ComputerPlayer("PlayerOne", Color.RED, 0, 0);
 		playerOne.giveCard(whiteCard);
 				
 		// Computer Player
-		ComputerPlayer playerTwo = new ComputerPlayer("PlayerTwo", "orange", 0, 0);
+		ComputerPlayer playerTwo = new ComputerPlayer("PlayerTwo", Color.ORANGE, 0, 0);
 		playerTwo.giveCard(mustardCard);
 		playerTwo.giveCard(kitchenCard);
 			
 		// Human player
-		HumanPlayer playerThree = new HumanPlayer("PlayerThree", "yellow", 0, 0);
+		HumanPlayer playerThree = new HumanPlayer("PlayerThree", Color.YELLOW, 0, 0);
 		playerThree.giveCard(pipeCard);
 				
 		// Computer Player
-		ComputerPlayer playerFour = new ComputerPlayer("PlayerFour", "blue", 0, 0);
+		ComputerPlayer playerFour = new ComputerPlayer("PlayerFour", Color.BLUE, 0, 0);
 		playerFour.giveCard(knifeCard);
 		playerFour.giveCard(conservatoryCard);
 		game.resetPlayers();

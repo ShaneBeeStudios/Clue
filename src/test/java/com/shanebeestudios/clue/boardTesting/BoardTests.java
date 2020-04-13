@@ -5,8 +5,8 @@
  * Relies on the JUnit 4 Test Suite
  */
 package com.shanebeestudios.clue.boardTesting;
-import junit.framework.Assert;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -26,7 +26,7 @@ public class BoardTests {
 	public static void beforeClass() throws BadConfigFormatException {
 		
 		//Instantiate the com.shanebeestudios.clue.board, and load / apply the config files.
-		newBoard = new Board("RoomLayout.csv", "legend.txt");
+		newBoard = new Board("RoomLayout.csv");
 		//newBoard.loadConfigFiles();
 		
 	}
@@ -114,7 +114,7 @@ public class BoardTests {
 	@Test (expected = BadConfigFormatException.class) // Make sure we have this class at the end of the function instantiated
 	public void testExceptionThrown() throws BadConfigFormatException  {
 		// Try to make a bad com.shanebeestudios.clue.board
-		Board otherBoard = new Board("BadFilename", "Invalid;'[]Filename,.,.()^*&");
+		Board otherBoard = new Board("BadFilename");
 		
 		// Try to call the config functions on a bad com.shanebeestudios.clue.board.
 		// Exception will be thrown

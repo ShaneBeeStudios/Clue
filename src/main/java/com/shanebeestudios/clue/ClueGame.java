@@ -1,56 +1,46 @@
 package com.shanebeestudios.clue;
 
-import com.shanebeestudios.clue.gui.DetectiveNotes;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Scanner;
 import com.shanebeestudios.clue.board.Board;
-
+import com.shanebeestudios.clue.game.Characters;
+import com.shanebeestudios.clue.game.Rooms;
+import com.shanebeestudios.clue.game.Weapons;
+import com.shanebeestudios.clue.gui.DetectiveNotes;
 import com.shanebeestudios.clue.misc.Card;
 import com.shanebeestudios.clue.misc.Card.CardType;
 import com.shanebeestudios.clue.misc.CardPanel;
-import com.shanebeestudios.clue.player.ComputerPlayer;
 import com.shanebeestudios.clue.misc.ControlPanel;
+import com.shanebeestudios.clue.misc.Solution;
+import com.shanebeestudios.clue.player.ComputerPlayer;
 import com.shanebeestudios.clue.player.HumanPlayer;
 import com.shanebeestudios.clue.player.Player;
-import com.shanebeestudios.clue.misc.Solution;
 
 import javax.swing.*;
-
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ClueGame extends JFrame {
 
-    private ArrayList<Card> deck;
-    private ArrayList<Card> closetCards;
-    private ArrayList<ComputerPlayer> cpuPlayers;
+    private List<Card> deck;
+    private List<Card> closetCards;
+    private List<ComputerPlayer> cpuPlayers;
     private HumanPlayer humanPlayer;
     private Player whosTurn;
-    private Board board;
-
-    public Board getBoard() {
-        return board;
-    }
-
-
-    private String legend;
-    private String layout;
-    private String players;
-    private String weapons;
-    private JMenuBar menubar;
-    private DetectiveNotes notes;
+    private final Board board;
+    private final String layout;
+    private final JMenuBar menubar;
+    private final DetectiveNotes notes;
     private static ClueGame game;
-    private ArrayList<Player> allPlayers;
+    private List<Player> allPlayers;
     private ControlPanel controlPanel;
 
 
-    public ClueGame(String legend, String layout, String players, String weapons) {
+    public ClueGame(String layout) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Clue!");
         setSize(760, 700);
@@ -58,21 +48,37 @@ public class ClueGame extends JFrame {
 
         menubar = new JMenuBar();
         setJMenuBar(menubar);
-        this.legend = legend;
         this.layout = layout;
-        this.players = players;
-        this.weapons = weapons;
         deck = new ArrayList<>();
         closetCards = new ArrayList<>();
         cpuPlayers = new ArrayList<>();
         allPlayers = new ArrayList<>();
         humanPlayer = new HumanPlayer();
-        board = new Board(layout, legend, this);
+        board = new Board(layout, this);
         notes = new DetectiveNotes();
         controlPanel = new ControlPanel(this);
         loadConfigFiles();
         whosTurn = humanPlayer;
 
+    }
+
+    public ClueGame() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Clue!");
+        setSize(800, 800);
+        this.setVisible(true);
+
+        layout = "RoomLayout.csv";
+        deck = new ArrayList<>();
+        closetCards = new ArrayList<>();
+        cpuPlayers = new ArrayList<>();
+        allPlayers = new ArrayList<>();
+        humanPlayer = new HumanPlayer();
+        board = new Board(layout);
+        menubar = new JMenuBar();
+        notes = new DetectiveNotes();
+        setJMenuBar(menubar);
+        loadConfigFiles();
     }
 
     public boolean isHumanMustFinish() {
@@ -83,26 +89,8 @@ public class ClueGame extends JFrame {
         board.setHumanMustFinish(humanMustFinish);
     }
 
-    public ClueGame() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Clue!");
-        setSize(800, 800);
-        this.setVisible(true);
-
-        legend = "legend.txt";
-        layout = "RoomLayout.csv";
-        players = "players.txt";
-        weapons = "weapons.txt";
-        deck = new ArrayList<Card>();
-        closetCards = new ArrayList<Card>();
-        cpuPlayers = new ArrayList<ComputerPlayer>();
-        allPlayers = new ArrayList<Player>();
-        humanPlayer = new HumanPlayer();
-        board = new Board(layout, legend);
-        menubar = new JMenuBar();
-        notes = new DetectiveNotes();
-        setJMenuBar(menubar);
-        loadConfigFiles();
+    public Board getBoard() {
+        return board;
     }
 
     public void loadConfigFiles() {
@@ -148,76 +136,33 @@ public class ClueGame extends JFrame {
     }
 
     public void loadPeople() {
-        cpuPlayers = new ArrayList<ComputerPlayer>();
-        Scanner peopleFile = null;
-        try {
-            peopleFile = new Scanner(new File(players));
-        } catch (FileNotFoundException e) {
-            System.out.println("Players file not found");
-        }
+        cpuPlayers = new ArrayList<>();
         String[] peopleSplit;
-        while (peopleFile.hasNextLine()) {
-            peopleSplit = peopleFile.nextLine().split(",");
-            if (peopleSplit[0].charAt(0) == '+') {
-                humanPlayer = new HumanPlayer(peopleSplit[0].substring(1), peopleSplit[1], Integer.parseInt(peopleSplit[2]),
-                        Integer.parseInt(peopleSplit[3]));
+        for (Characters character : Characters.values()) {
+            // TODO random player for beginner
+            if (character == Characters.MISS_SCARLETT) {
+                humanPlayer = new HumanPlayer(character.getName(), character.getColor(), character.getXPos(), character.getYPos());
             } else {
-                cpuPlayers.add(new ComputerPlayer(peopleSplit[0], peopleSplit[1], Integer.parseInt(peopleSplit[2]),
-                        Integer.parseInt(peopleSplit[3])));
+                cpuPlayers.add(new ComputerPlayer(character.getName(), character.getColor(), character.getXPos(), character.getYPos()));
             }
         }
         allPlayers.add(humanPlayer);
         allPlayers.addAll(cpuPlayers);
-
-        peopleFile.close();
     }
 
     public void loadDeck() {
-        deck = new ArrayList<Card>();
-        Scanner peopleFile = null;
-        try {
-            peopleFile = new Scanner(new File(players));
-        } catch (FileNotFoundException e) {
-            System.out.println("Players file not found");
+        deck = new ArrayList<>();
+        for (Characters character : Characters.values()) {
+            deck.add(new Card(character.getName(), CardType.PERSON));
         }
-        String[] peopleSplit;
-        while (peopleFile.hasNextLine()) {
-            peopleSplit = peopleFile.nextLine().split(",");
-            if (peopleSplit[0].charAt(0) == '+') {
-                deck.add(new Card(peopleSplit[0].substring(1), CardType.PERSON));
-            } else {
-                deck.add(new Card(peopleSplit[0], CardType.PERSON));
+        for (Rooms room : Rooms.values()) {
+            if (room != Rooms.CLOSET && room != Rooms.WALKWAY) {
+                deck.add(new Card(room.getName(), CardType.ROOM));
             }
         }
-        peopleFile.close();
-
-        Scanner roomFile = null;
-        try {
-            roomFile = new Scanner(new File(legend));
-        } catch (FileNotFoundException e) {
-            System.out.println("Legend file not found");
+        for (Weapons weapon : Weapons.values()) {
+            deck.add(new Card(weapon.getName(), CardType.WEAPON));
         }
-        String[] roomSplit;
-        while (roomFile.hasNextLine()) {
-            roomSplit = roomFile.nextLine().split(", ");
-            if (!roomSplit[1].equalsIgnoreCase("Closet")) {
-                deck.add(new Card(roomSplit[1], CardType.ROOM));
-            }
-        }
-        roomFile.close();
-
-        Scanner weaponFile = null;
-        try {
-            weaponFile = new Scanner(new File(weapons));
-        } catch (FileNotFoundException e) {
-            System.out.println("Weapons file not found");
-        }
-        String weaponSplit;
-        while (weaponFile.hasNextLine()) {
-            weaponSplit = weaponFile.nextLine();
-            deck.add(new Card(weaponSplit, CardType.WEAPON));
-        }
-        weaponFile.close();
     }
 
     public void deal() {
@@ -279,21 +224,18 @@ public class ClueGame extends JFrame {
         }
 
 
-        ArrayList<Player> thesePlayers = new ArrayList<Player>();
-        ArrayList<String> theseStrings = new ArrayList<String>();
-        ArrayList<Card> theseCards = new ArrayList<Card>();
+        ArrayList<Player> thesePlayers = new ArrayList<>();
+        ArrayList<String> theseStrings = new ArrayList<>();
+        ArrayList<Card> theseCards = new ArrayList<>();
         Card answer = null;
         theseStrings.add(theRoom);
         theseStrings.add(theWeapon);
         theseStrings.add(thePerson);
         thesePlayers.add(humanPlayer);
-        for (Player a : cpuPlayers)
-            thesePlayers.add(a);
+        thesePlayers.addAll(cpuPlayers);
         thesePlayers.remove(thePlayer);
         for (Player a : thesePlayers) {
-            for (Card b : a.getCards()) {
-                theseCards.add(b);
-            }
+            theseCards.addAll(a.getCards());
         }
         Collections.shuffle(theseCards);
         for (Card a : theseCards) {
@@ -326,7 +268,7 @@ public class ClueGame extends JFrame {
         return rooms;
     }
 
-    public ArrayList<Card> getDeck() {
+    public List<Card> getDeck() {
         return deck;
     }
 
@@ -335,7 +277,7 @@ public class ClueGame extends JFrame {
         this.deck = deck;
     }
 
-    public ArrayList<Card> getClosetCards() {
+    public List<Card> getClosetCards() {
         return closetCards;
     }
 
@@ -343,7 +285,7 @@ public class ClueGame extends JFrame {
         this.closetCards = closetCards;
     }
 
-    public ArrayList<ComputerPlayer> getCpuPlayers() {
+    public List<ComputerPlayer> getCpuPlayers() {
         return cpuPlayers;
     }
 
@@ -377,7 +319,7 @@ public class ClueGame extends JFrame {
 
     public void resetPlayers() {
         humanPlayer = null;
-        cpuPlayers = new ArrayList<ComputerPlayer>();
+        cpuPlayers = new ArrayList<>();
     }
 
     public void startHumanTurn() {
@@ -400,7 +342,7 @@ public class ClueGame extends JFrame {
         return controlPanel;
     }
 
-    public ArrayList<Player> getAllPlayers() {
+    public List<Player> getAllPlayers() {
         return allPlayers;
     }
 
@@ -417,7 +359,7 @@ public class ClueGame extends JFrame {
     }
 
     public static void main(String[] args) {
-        game = new ClueGame("legend.txt", "RoomLayout.csv", "players.txt", "weapons.txt");
+        game = new ClueGame("RoomLayout.csv");
         game.setVisible(true);
         JOptionPane.showMessageDialog(game, "You are Miss Scarlet, select a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
         game.startHumanTurn();

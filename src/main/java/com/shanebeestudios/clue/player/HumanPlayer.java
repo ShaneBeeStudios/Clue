@@ -2,9 +2,16 @@ package com.shanebeestudios.clue.player;
 
 import com.shanebeestudios.clue.board.Board;
 
+import java.awt.*;
+
 public class HumanPlayer extends Player {
 
     private boolean canMakeAccusation;
+
+    public HumanPlayer(String name, Color color, int row, int column) {
+        super(name, color, row, column);
+        canMakeAccusation = true;
+    }
 
     public HumanPlayer() {
         this.setHuman(true);
@@ -13,11 +20,6 @@ public class HumanPlayer extends Player {
 
     public void setCanMakeAccusation(boolean canMakeAccusation) {
         this.canMakeAccusation = canMakeAccusation;
-    }
-
-    public HumanPlayer(String name, String color, int row, int column) {
-        super(name, color, row, column);
-        canMakeAccusation = true;
     }
 
     public void makeMove(Board board) {

@@ -2,11 +2,13 @@ package com.shanebeestudios.clue.player;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.shanebeestudios.clue.board.Board;
 import com.shanebeestudios.clue.misc.Card;
 import com.shanebeestudios.clue.misc.Card.CardType;
 
+@SuppressWarnings("unused")
 public class Player {
 
     private int row;
@@ -14,7 +16,7 @@ public class Player {
     private char room;
     private String name;
     protected ArrayList<Card> knownCards;
-    private String color;
+    private Color color;
     private ArrayList<Card> cards;
     private boolean highlight;
     private boolean human;
@@ -36,23 +38,23 @@ public class Player {
     }
 
     public void resetCards() {
-        knownCards = new ArrayList<Card>();
-        cards = new ArrayList<Card>();
+        knownCards = new ArrayList<>();
+        cards = new ArrayList<>();
     }
 
-    public Player(String name, String color, int row, int column) {
+    public Player(String name, Color color, int row, int column) {
         this.row = row;
         this.column = column;
         this.name = name;
         this.color = color;
-        cards = new ArrayList<Card>();
-        knownCards = new ArrayList<Card>();
+        cards = new ArrayList<>();
+        knownCards = new ArrayList<>();
         human = false;
     }
 
     public Player() {
-        cards = new ArrayList<Card>();
-        knownCards = new ArrayList<Card>();
+        cards = new ArrayList<>();
+        knownCards = new ArrayList<>();
         human = false;
     }
 
@@ -112,7 +114,7 @@ public class Player {
     }
 
 
-    public ArrayList<Card> getKnownCards() {
+    public List<Card> getKnownCards() {
         return knownCards;
     }
 
@@ -152,9 +154,7 @@ public class Player {
                 return false;
         } else if (!name.equals(other.name))
             return false;
-        if (row != other.row)
-            return false;
-        return true;
+        return row == other.row;
     }
 
     public void draw(Graphics g, Board b) {
@@ -165,28 +165,7 @@ public class Player {
     }
 
     public void setColor(Graphics g) {
-        switch (color) {
-            case "Yellow":
-                g.setColor(Color.black);
-                break;
-            case "Orange":
-                g.setColor(Color.orange);
-                break;
-            case "Red":
-                g.setColor(Color.red);
-                break;
-            case "Green":
-                g.setColor(Color.green);
-                break;
-            case "White":
-                g.setColor(Color.white);
-                break;
-            case "Magenta":
-                g.setColor(Color.magenta);
-                break;
-            default:
-                break;
-        }
+        g.setColor(color);
     }
 
 }

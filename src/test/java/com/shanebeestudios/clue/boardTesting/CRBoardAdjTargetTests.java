@@ -1,21 +1,20 @@
 package com.shanebeestudios.clue.boardTesting;
 
-import java.util.LinkedList;
-import java.util.Set;
-
+import com.shanebeestudios.clue.board.Board;
+import com.shanebeestudios.clue.board.BoardCell;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.shanebeestudios.clue.board.Board;
-import com.shanebeestudios.clue.board.BoardCell;
+import java.util.LinkedList;
+import java.util.Set;
 
 
 public class CRBoardAdjTargetTests {
 	private static Board board;
 	@BeforeClass
 	public static void setUp() {
-		board = new Board("ClueLayout.csv", "ClueLegend.txt");
+		board = new Board("ClueLayout.csv");
 		//com.shanebeestudios.clue.board.loadConfigFiles();
 		//com.shanebeestudios.clue.board.calcAdjacencies();
 
