@@ -16,6 +16,7 @@
 
     <repositories>
         <repository>
+            <!-- Using SpigotMC repo until I find the correct one for junit -->
             <id>spigotmc-public</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
