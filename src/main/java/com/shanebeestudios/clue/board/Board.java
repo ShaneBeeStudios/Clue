@@ -7,6 +7,7 @@
  */
 
 package com.shanebeestudios.clue.board;
+
 import java.awt.Graphics;
 
 import java.awt.event.MouseEvent;
@@ -34,15 +35,7 @@ import com.shanebeestudios.clue.misc.SuggestDialog.SuggestType;
 
 public class Board extends JPanel implements MouseListener {
 
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
-
-
-
 
 	private ArrayList<Player> players;
 	public void setPlayers(ArrayList<Player> players) {

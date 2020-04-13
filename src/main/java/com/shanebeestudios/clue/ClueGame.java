@@ -13,7 +13,7 @@ import com.shanebeestudios.clue.board.Board;
 import com.shanebeestudios.clue.misc.Card;
 import com.shanebeestudios.clue.misc.Card.CardType;
 import com.shanebeestudios.clue.misc.CardPanel;
-import com.shanebeestudios.clue.misc.ComputerPlayer;
+import com.shanebeestudios.clue.player.ComputerPlayer;
 import com.shanebeestudios.clue.misc.ControlPanel;
 import com.shanebeestudios.clue.player.HumanPlayer;
 import com.shanebeestudios.clue.player.Player;
@@ -24,6 +24,7 @@ import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 public class ClueGame extends JFrame {
 
     private ArrayList<Card> deck;
@@ -61,10 +62,10 @@ public class ClueGame extends JFrame {
         this.layout = layout;
         this.players = players;
         this.weapons = weapons;
-        deck = new ArrayList<Card>();
-        closetCards = new ArrayList<Card>();
-        cpuPlayers = new ArrayList<ComputerPlayer>();
-        allPlayers = new ArrayList<Player>();
+        deck = new ArrayList<>();
+        closetCards = new ArrayList<>();
+        cpuPlayers = new ArrayList<>();
+        allPlayers = new ArrayList<>();
         humanPlayer = new HumanPlayer();
         board = new Board(layout, legend, this);
         notes = new DetectiveNotes();

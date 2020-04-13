@@ -12,36 +12,31 @@ import java.awt.Graphics;
 
 // WalkwayCell class body, extending BoardCell
 public class WalkwayCell extends BoardCell {
-		
-	public WalkwayCell() {
-		super();
-		highlight = false;
-	}
-	
-	// Overridden function from the parent class. Used to signify that this cell is a walkway
-	@Override
-	public boolean isWalkway() {
-		return true;
-	}
 
-	@Override
-	public void draw(Graphics g, Board b) {
-		int pixelModifier = Math.min(b.size().width/b.getNumColumns(), b.size().height/b.getNumRows());
-		//int pixelModifier = 25;
-		g.setColor(Color.yellow);
-		if (this.highlight) {
-			g.setColor(Color.GREEN);
-		}
+    public WalkwayCell() {
+        super();
+        highlight = false;
+    }
 
-		g.fillRect(column*pixelModifier, row*pixelModifier, pixelModifier, pixelModifier);
-		g.setColor(Color.black);
+    // Overridden function from the parent class. Used to signify that this cell is a walkway
+    @Override
+    public boolean isWalkway() {
+        return true;
+    }
 
-		g.drawRect(column*pixelModifier, row*pixelModifier, pixelModifier, pixelModifier);
-		
-		
-	}
-	
-	
-	
+    @Override
+    public void draw(Graphics g, Board b) {
+        int pixelModifier = Math.min(b.size().width / b.getNumColumns(), b.size().height / b.getNumRows());
+        //int pixelModifier = 25;
+        g.setColor(Color.yellow);
+        if (this.highlight) {
+            g.setColor(Color.GREEN);
+        }
+
+        g.fillRect(column * pixelModifier, row * pixelModifier, pixelModifier, pixelModifier);
+        g.setColor(Color.black);
+
+        g.drawRect(column * pixelModifier, row * pixelModifier, pixelModifier, pixelModifier);
+    }
 
 }

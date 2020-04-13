@@ -9,7 +9,7 @@ public class IntBoard {
 
     private final static int COLUMNS = 4;
     private final static int ROWS = 4;
-    private boolean visited[] = new boolean[ROWS * COLUMNS];
+    private boolean visited[];
     private Map<Integer, LinkedList<Integer>> adjacencyLists;
     private Set<Integer> targets;
 
