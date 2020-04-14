@@ -159,8 +159,6 @@ public class ClueGame extends JFrame {
         // Add everyone to the list of all players
         allPlayers.add(humanPlayer);
         allPlayers.addAll(cpuPlayers);
-        JOptionPane.showMessageDialog(game, "You are " + humanPlayer.getName() +  ",\nselect a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE, Icon.CLUE_LOGO);
-
     }
 
     public void loadDeck() {
@@ -380,7 +378,7 @@ public class ClueGame extends JFrame {
         } catch (Exception ignore) {}
         game = new ClueGame("RoomLayoutNEW.csv");
         game.setVisible(true);
-        //JOptionPane.showMessageDialog(game, "You are Miss Scarlet,\nselect a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE, Icon.CLUE_LOGO);
+        JOptionPane.showMessageDialog(game, "You are " + game.getHumanPlayer().getName() + ",\nselect a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE, Icon.CLUE_LOGO);
         game.startHumanTurn();
         game.humanPlayer.makeMove(game.board);
     }
