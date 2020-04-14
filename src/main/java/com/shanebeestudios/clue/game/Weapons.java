@@ -5,7 +5,7 @@ public enum Weapons {
 
     REVOLVER("Revolver"),
     CANDLESTICK("Candlestick"),
-    LEAD_PIPE("Lead Pile"),
+    LEAD_PIPE("Lead Pipe"),
     KNIFE("Knife"),
     ROPE("Rope"),
     WRENCH("Wrench");
