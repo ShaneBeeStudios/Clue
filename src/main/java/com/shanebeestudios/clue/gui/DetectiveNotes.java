@@ -1,154 +1,104 @@
 package com.shanebeestudios.clue.gui;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import com.shanebeestudios.clue.game.Characters;
+import com.shanebeestudios.clue.game.Rooms;
+import com.shanebeestudios.clue.game.Weapons;
 
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import java.awt.*;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class DetectiveNotes extends JDialog {
-
-    JPanel people;
-    JPanel rooms;
-    JPanel weapons;
-    JPanel personGuess;
-    JPanel roomGuess;
-    JPanel weaponGuess;
 
     public DetectiveNotes() {
         setSize(600, 450);
         setTitle("Detective Notes");
-        people = new JPanel();
-        rooms = new JPanel();
-        weapons = new JPanel();
-        personGuess = new JPanel();
-        roomGuess = new JPanel();
-        weaponGuess = new JPanel();
         setLayout(new GridLayout(3, 2));
         createLayout();
     }
 
     public void createLayout() {
         createPeople();
-        createRooms();
-        createWeapons();
         createPersonGuess();
+        createRooms();
         createRoomGuess();
+        createWeapons();
         createWeaponGuess();
-        add(people);
-        add(personGuess);
-        add(rooms);
-        add(roomGuess);
-        add(weapons);
-        add(weaponGuess);
     }
 
     public void createPeople() {
+        JPanel people = new JPanel();
         people.setLayout(new GridLayout(3, 3));
         people.setBorder(new TitledBorder(new EtchedBorder(), "People"));
-        JCheckBox scarlet = new JCheckBox("Miss Scarlet");
-        JCheckBox green = new JCheckBox("Mr. Green");
-        JCheckBox peacock = new JCheckBox("Mrs. Peacock");
-        JCheckBox mustard = new JCheckBox("Colonel Mustard");
-        JCheckBox white = new JCheckBox("Mrs. White");
-        JCheckBox plum = new JCheckBox("Professor Plum");
-        people.add(scarlet);
-        people.add(green);
-        people.add(peacock);
-        people.add(mustard);
-        people.add(white);
-        people.add(plum);
-
+        for (Characters character : Characters.values()) {
+            people.add(new JCheckBox(character.getName()));
+        }
+        add(people);
     }
 
     public void createRooms() {
+        JPanel rooms = new JPanel();
         rooms.setLayout(new GridLayout(5, 2));
         rooms.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
-        JCheckBox kitchen = new JCheckBox("Kitchen");
-        JCheckBox lounge = new JCheckBox("Lounge");
-        JCheckBox conservatory = new JCheckBox("Conservatory");
-        JCheckBox study = new JCheckBox("Study");
-        JCheckBox billiard = new JCheckBox("Billiard Room");
-        JCheckBox dining = new JCheckBox("Dining Room");
-        JCheckBox ballroom = new JCheckBox("Ballroom");
-        JCheckBox hall = new JCheckBox("Hall");
-        JCheckBox library = new JCheckBox("Library");
-        rooms.add(kitchen);
-        rooms.add(lounge);
-        rooms.add(conservatory);
-        rooms.add(study);
-        rooms.add(billiard);
-        rooms.add(dining);
-        rooms.add(ballroom);
-        rooms.add(hall);
-        rooms.add(library);
+        for (Rooms room : Rooms.values()) {
+            if (room != Rooms.WALKWAY && room != Rooms.OUTSIDE && room != Rooms.CLOSET) {
+                rooms.add(new JCheckBox(room.getName()));
+            }
+        }
+        add(rooms);
     }
 
     public void createWeapons() {
+        JPanel weapons = new JPanel();
         weapons.setLayout(new GridLayout(3, 3));
         weapons.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
-        JCheckBox candlestick = new JCheckBox("Candlestick");
-        JCheckBox pipe = new JCheckBox("Lead Pipe");
-        JCheckBox rope = new JCheckBox("Rope");
-        JCheckBox knife = new JCheckBox("Knife");
-        JCheckBox revolver = new JCheckBox("Revolver");
-        JCheckBox wrench = new JCheckBox("Wrench");
-        weapons.add(candlestick);
-        weapons.add(pipe);
-        weapons.add(rope);
-        weapons.add(knife);
-        weapons.add(revolver);
-        weapons.add(wrench);
+        for (Weapons weapon : Weapons.values()) {
+            weapons.add(new JCheckBox(weapon.getName()));
+        }
+        add(weapons);
     }
 
     public void createPersonGuess() {
+        JPanel personGuess = new JPanel();
         personGuess.setLayout(new BorderLayout());
-        JComboBox person = new JComboBox();
-        person.addItem("");
-        person.addItem("Miss Scarlet");
-        person.addItem("Mr. Green");
-        person.addItem("Mrs. Peacock");
-        person.addItem("Colonel Mustard");
-        person.addItem("Mrs. White");
-        person.addItem("Professor Plum");
-        personGuess.add(person, BorderLayout.CENTER);
+        JComboBox people = new JComboBox();
+        people.addItem("");
+        for (Characters character : Characters.values()) {
+            people.addItem(character.getName());
+        }
+        personGuess.add(people, BorderLayout.CENTER);
         personGuess.setBorder(new TitledBorder(new EtchedBorder(), "Person Guess"));
+        add(personGuess);
     }
 
     public void createRoomGuess() {
+        JPanel roomGuess = new JPanel();
         roomGuess.setLayout(new BorderLayout());
-        JComboBox room = new JComboBox();
-        room.addItem("");
-        room.addItem("Conservatory");
-        room.addItem("Kitchen");
-        room.addItem("Ballroom");
-        room.addItem("Billiard Room");
-        room.addItem("Library");
-        room.addItem("Study");
-        room.addItem("Dining Room");
-        room.addItem("Lounge");
-        room.addItem("Hall");
-        roomGuess.add(room, BorderLayout.CENTER);
+        JComboBox rooms = new JComboBox();
+        rooms.addItem("");
+        for (Rooms room : Rooms.values()) {
+            if (room != Rooms.WALKWAY && room != Rooms.OUTSIDE && room != Rooms.CLOSET) {
+                rooms.addItem(room.getName());
+            }
+        }
+        roomGuess.add(rooms, BorderLayout.CENTER);
         roomGuess.setBorder(new TitledBorder(new EtchedBorder(), "Room Guess"));
+        add(roomGuess);
     }
 
     public void createWeaponGuess() {
+        JPanel weaponGuess = new JPanel();
         weaponGuess.setLayout(new BorderLayout());
-        JComboBox weapon = new JComboBox();
-        weapon.addItem("");
-        weapon.addItem("Candlestick");
-        weapon.addItem("Knife");
-        weapon.addItem("Rope");
-        weapon.addItem("Revolver");
-        weapon.addItem("Lead Pipe");
-        weapon.addItem("Wrench");
-        weaponGuess.add(weapon, BorderLayout.CENTER);
+        JComboBox weapons = new JComboBox();
+        weapons.addItem("");
+        for (Weapons weapon : Weapons.values()) {
+            weapons.addItem(weapon.getName());
+        }
+        weaponGuess.add(weapons, BorderLayout.CENTER);
         weaponGuess.setBorder(new TitledBorder(new EtchedBorder(), "Weapon Guess"));
+        add(weaponGuess);
     }
 
 }
