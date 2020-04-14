@@ -13,6 +13,7 @@ import com.shanebeestudios.clue.board.cell.BoardCell;
 import com.shanebeestudios.clue.board.cell.OutsideCell;
 import com.shanebeestudios.clue.board.cell.RoomCell;
 import com.shanebeestudios.clue.board.cell.WalkwayCell;
+import com.shanebeestudios.clue.game.Icon;
 import com.shanebeestudios.clue.game.Rooms;
 import com.shanebeestudios.clue.misc.SuggestDialog;
 import com.shanebeestudios.clue.misc.SuggestDialog.SuggestType;
@@ -106,7 +107,7 @@ public class Board extends JPanel implements MouseListener {
 			}
 		}
 		if(badCell)
-			JOptionPane.showMessageDialog(this, "Please select a highlighted cell", "Invalid Move", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Please select a highlighted cell", "Invalid Move", JOptionPane.INFORMATION_MESSAGE, Icon.CLUE_LOGO);
 	}
 	
 	public boolean isHumanMustFinish() {

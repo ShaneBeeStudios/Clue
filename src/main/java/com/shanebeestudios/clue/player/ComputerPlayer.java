@@ -4,6 +4,7 @@ import com.shanebeestudios.clue.ClueGame;
 import com.shanebeestudios.clue.board.Board;
 import com.shanebeestudios.clue.board.cell.BoardCell;
 import com.shanebeestudios.clue.board.cell.RoomCell;
+import com.shanebeestudios.clue.game.Icon;
 import com.shanebeestudios.clue.misc.Card;
 import com.shanebeestudios.clue.misc.Card.CardType;
 import com.shanebeestudios.clue.misc.Solution;
@@ -111,7 +112,8 @@ public class ComputerPlayer extends Player {
         //System.out.println("accusation" + accusation.getPerson() + " " + accusation.getRoom() + " " + accusation.getWeapon());
         Solution solution = new Solution(accusation.getPerson().getName(), accusation.getWeapon().getName(), accusation.getRoom().getName());
         if (game.checkAccusation(solution)) {
-            JOptionPane.showMessageDialog(game, "Computer wins! It was " + accusation.getPerson().getName() + " in the " + accusation.getRoom().getName() + " with the " + accusation.getWeapon().getName() + ". The game will now exit.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(game, "Computer wins! It was " + accusation.getPerson().getName() + " in the " + accusation.getRoom().getName() +
+                    " with the " + accusation.getWeapon().getName() + ". The game will now exit.", "Game Over", JOptionPane.INFORMATION_MESSAGE, Icon.CLUE_LOGO);
         }
     }
 

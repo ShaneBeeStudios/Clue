@@ -2,6 +2,7 @@ package com.shanebeestudios.clue;
 
 import com.shanebeestudios.clue.board.Board;
 import com.shanebeestudios.clue.game.Characters;
+import com.shanebeestudios.clue.game.Icon;
 import com.shanebeestudios.clue.game.Rooms;
 import com.shanebeestudios.clue.game.Weapons;
 import com.shanebeestudios.clue.gui.DetectiveNotes;
@@ -43,7 +44,9 @@ public class ClueGame extends JFrame {
     public ClueGame(String layout) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Clue!");
-        setSize(760, 700);
+        setSize(760, 850);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         this.setVisible(true);
 
         menubar = new JMenuBar();
@@ -361,7 +364,7 @@ public class ClueGame extends JFrame {
     public static void main(String[] args) {
         game = new ClueGame("RoomLayoutNEW.csv");
         game.setVisible(true);
-        JOptionPane.showMessageDialog(game, "You are Miss Scarlet, select a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(game, "You are Miss Scarlet,\nselect a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE, Icon.CLUE_LOGO);
         game.startHumanTurn();
         game.humanPlayer.makeMove(game.board);
     }

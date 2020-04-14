@@ -12,6 +12,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import com.shanebeestudios.clue.ClueGame;
+import com.shanebeestudios.clue.game.Icon;
 import com.shanebeestudios.clue.misc.SuggestDialog.SuggestType;
 import com.shanebeestudios.clue.player.ComputerPlayer;
 
@@ -37,10 +38,10 @@ public class ControlPanel extends JPanel {
             if (e.getSource() == accusation && game.getHumanPlayer().isCanMakeAccusation()) {
                 new SuggestDialog(SuggestType.ACCUSATION, game);
             } else if (e.getSource() == accusation && !game.getHumanPlayer().isCanMakeAccusation()) {
-                JOptionPane.showMessageDialog(game, "Not your turn", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(game, "Not your turn", "Error", JOptionPane.ERROR_MESSAGE, Icon.CLUE_LOGO);
             } else if (e.getSource() == nextPlayer) {
                 if (game.isHumanMustFinish()) {
-                    JOptionPane.showMessageDialog(game, "You must finish your turn", "Invalid Move", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(game, "You must finish your turn", "Invalid Move", JOptionPane.INFORMATION_MESSAGE, Icon.CLUE_LOGO);
                 } else {
                     for (int i = 0; i < game.getAllPlayers().size(); i++) {
                         if (game.getAllPlayers().get(i).getName().equals(game.getWhosTurn().getName())) {
