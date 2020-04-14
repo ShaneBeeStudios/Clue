@@ -5,7 +5,9 @@
  * At the current moment is barebones, but has the boolean function "isWalkway" returning true and will be used to draw differently on the com.shanebeestudios.clue.gui
  */
 
-package com.shanebeestudios.clue.board;
+package com.shanebeestudios.clue.board.cell;
+
+import com.shanebeestudios.clue.board.Board;
 
 import java.awt.Color;
 import java.awt.Graphics;

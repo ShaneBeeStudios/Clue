@@ -8,12 +8,21 @@
 
 package com.shanebeestudios.clue.board;
 
-import java.awt.Graphics;
+import com.shanebeestudios.clue.ClueGame;
+import com.shanebeestudios.clue.board.cell.BoardCell;
+import com.shanebeestudios.clue.board.cell.OutsideCell;
+import com.shanebeestudios.clue.board.cell.RoomCell;
+import com.shanebeestudios.clue.board.cell.WalkwayCell;
+import com.shanebeestudios.clue.game.Rooms;
+import com.shanebeestudios.clue.misc.SuggestDialog;
+import com.shanebeestudios.clue.misc.SuggestDialog.SuggestType;
+import com.shanebeestudios.clue.player.HumanPlayer;
+import com.shanebeestudios.clue.player.Player;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,18 +33,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import com.shanebeestudios.clue.ClueGame;
-import com.shanebeestudios.clue.game.Rooms;
-import com.shanebeestudios.clue.player.HumanPlayer;
-import com.shanebeestudios.clue.player.Player;
-import com.shanebeestudios.clue.misc.SuggestDialog;
-import com.shanebeestudios.clue.misc.SuggestDialog.SuggestType;
-
 // Board class body
 
+@SuppressWarnings("unused")
 public class Board extends JPanel implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
@@ -45,15 +45,14 @@ public class Board extends JPanel implements MouseListener {
 	private Map<Character,String> rooms;
 	private int numRows;
 	private int numColumns;
-	private boolean highlight;
-	private int dieRoll;
+    private int dieRoll;
 	private int pixelModifier;
 
 	// Filepaths for the configuration files
 	private String csvFilepath;
 
 	// Array used to keep track of visited cells when the fucntion calcAdjacencies is called
-	private boolean visited[];
+	private boolean[] visited;
 	private Map<Integer, LinkedList<Integer>> adjacencyLists;
 	private Set<BoardCell> targets;
 	private Player humanPlayer;
@@ -120,7 +119,7 @@ public class Board extends JPanel implements MouseListener {
 
 	public void unHighlightTargets() {
 		for(BoardCell c : targets) {
-			c.highlight = false;
+			c.setHighlight(false);
 		}
 	}
 	
@@ -133,12 +132,10 @@ public class Board extends JPanel implements MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent arg0) {}
 
-
-
 	public void highlightTargets(int row, int column) {
 		this.startTargets(this.calcIndex(row,column), dieRoll);
 		for (BoardCell x : this.getTargets()) {
-			x.highlight = true;
+			x.setHighlight(true);
 			this.repaint();
 		}
 		//System.out.println(pixelModifier);
@@ -155,12 +152,10 @@ public class Board extends JPanel implements MouseListener {
 			y.draw(g, this);
 		}
 		setSize(pixelModifier*numColumns, pixelModifier*numRows);
-
 	}
 
 	public void setHighlight(boolean highlight) {
-		this.highlight = highlight;
-	}
+    }
 	
 	// Initializes default values of cells, rooms, numRows, and numColumns
 	private void initialize() {
@@ -172,22 +167,20 @@ public class Board extends JPanel implements MouseListener {
 		numColumns = 0;
 	}
 
-	public void loadConfigFiles() {
+    public void loadConfigFiles() {
 		try {
-	
 			loadRoomConfig();
 			loadBoardConfig();
 			calcAdjacencies();
-
 		} catch(BadConfigFormatException e) { // If one of those throws an error, catch it, print it to the screen
-			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
 
 	// One of the heavy lifter functions for the loadConfigFiles method
 	// Throws: BadConfigFormatException
-	// Loads up the legend file, and populates the legend in the com.shanebeestudios.clue.board
-	public void loadRoomConfig() throws BadConfigFormatException  {
+	// Loads up the legend file, and populates the legend in the board
+	public void loadRoomConfig() {
 		for (Rooms room : Rooms.values()) {
 		    rooms.put(room.getKey(), room.getName());
         }
@@ -195,11 +188,12 @@ public class Board extends JPanel implements MouseListener {
 
 	// Second heavy lifter function for the loadConfigFiles method
 	// Throws: BadConfigFormatException
-	// Load up the config for the com.shanebeestudios.clue.board, and create the cells
+	// Load up the config for the board, and create the cells
 	public void loadBoardConfig() throws BadConfigFormatException {
-		Scanner csvFile = null;
+		Scanner csvFile;
         // Attempt to create the scanner on the csv file
         InputStream s = ClueGame.class.getClassLoader().getResourceAsStream(csvFilepath);
+        assert s != null;
         csvFile = new Scanner(s);
         String csvLine;
 		String[] csvSplit;
@@ -209,10 +203,17 @@ public class Board extends JPanel implements MouseListener {
 			csvSplit = csvLine.split(",");
 			++numRows;
             for (String value : csvSplit) {
+                if (value.length() == 0) {
+                    System.out.println("Line error: " + numRows);
+                }
 
                 // If the classifier is a w, make a new walkway cell
                 if (value.charAt(0) == 'W') {
                     cells.add(new WalkwayCell());
+                }
+                // If the classifier is an underscore, make a new outside cell
+                else if (value.charAt(0) == '_') {
+                    cells.add(new OutsideCell());
                 }
                 // Otherwise, it must be a room cell, or an invalid cell
                 else {
@@ -257,7 +258,7 @@ public class Board extends JPanel implements MouseListener {
 		}
 	}
 
-	// Calculates the adjacencies for every cell on the com.shanebeestudios.clue.board, stores them into the adjacency list
+	// Calculates the adjacencies for every cell on the board, stores them into the adjacency list
 	public void calcAdjacencies() {
 		LinkedList<Integer> adjacency;
 
@@ -292,9 +293,8 @@ public class Board extends JPanel implements MouseListener {
 				// Make a room cell from the doorway cell we're checking
 				RoomCell thisRoom = (RoomCell) cells.get(calcIndex(i1,j1));
 				// If the you remove the differences in distance between the cells and now the x's and y's are equal, return true 
-				if(i1 + thisRoom.getDoorDirection().getX() == i0 && j1 + thisRoom.getDoorDirection().getY() == j0) return true;
-				return false;
-			}
+                return i1 + thisRoom.getDoorDirection().getX() == i0 && j1 + thisRoom.getDoorDirection().getY() == j0;
+            }
 			else {
 				return !cells.get(calcIndex(i1,j1)).isRoom();
 			}
@@ -313,26 +313,26 @@ public class Board extends JPanel implements MouseListener {
 	// Does the heavy lifting for startTargets, populates the targets list for a current location given a number of steps
 	private void calcTargets(int location, int steps) {
 
-		LinkedList<Integer> adjacentCells = new LinkedList<>();
+        LinkedList<Integer> adjacentCells = new LinkedList<>();
 
-		for(int adjCell : adjacencyLists.get(location)) {
-			if(visited[adjCell] == false) {
-				adjacentCells.add(adjCell);
-			}
-		}
+        for (int adjCell : adjacencyLists.get(location)) {
+            if (!visited[adjCell]) {
+                adjacentCells.add(adjCell);
+            }
+        }
 
-		for(int adjCell : adjacentCells) {
-			visited[adjCell] = true;
-			BoardCell thisCell = cells.get(adjCell);
-			if(steps == 1 || thisCell.isDoorway()) {
-				targets.add(thisCell);
-			} 
-			else {
-				calcTargets(adjCell, steps - 1);
-			}
-			visited[adjCell] = false;
-		}
-	}
+        for (int adjCell : adjacentCells) {
+            visited[adjCell] = true;
+            BoardCell thisCell = cells.get(adjCell);
+            if (thisCell.isOutside()) continue; // TODO this is a test for outside cells
+            if (steps == 1 || thisCell.isDoorway()) {
+                targets.add(thisCell);
+            } else {
+                calcTargets(adjCell, steps - 1);
+            }
+            visited[adjCell] = false;
+        }
+    }
 
 
 	public RoomCell getRoomCellAt(int row, int column) {
@@ -358,7 +358,6 @@ public class Board extends JPanel implements MouseListener {
 
 	public Set<BoardCell> getTargets() {
 		return targets;
-
 	}
 
 	public LinkedList<Integer> getAdjList(int location) {

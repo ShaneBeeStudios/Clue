@@ -359,7 +359,7 @@ public class ClueGame extends JFrame {
     }
 
     public static void main(String[] args) {
-        game = new ClueGame("RoomLayout.csv");
+        game = new ClueGame("RoomLayoutNEW.csv");
         game.setVisible(true);
         JOptionPane.showMessageDialog(game, "You are Miss Scarlet, select a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
         game.startHumanTurn();

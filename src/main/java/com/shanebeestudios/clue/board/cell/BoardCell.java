@@ -3,7 +3,9 @@
  * Authors: Brandon Rodriguez, Hunter Lang
  * This class provides the framework needed for the different types of cells in the game
  */
-package com.shanebeestudios.clue.board;
+package com.shanebeestudios.clue.board.cell;
+
+import com.shanebeestudios.clue.board.Board;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -26,6 +28,18 @@ public abstract class BoardCell {
 
     public boolean isDoorway() {
         return false;
+    }
+
+    public boolean isOutside() {
+        return false;
+    }
+
+    public boolean isHighlight() {
+        return highlight;
+    }
+
+    public void setHighlight(boolean highlight) {
+        this.highlight = highlight;
     }
 
     @SuppressWarnings("deprecation")

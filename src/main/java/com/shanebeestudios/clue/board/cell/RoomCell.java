@@ -4,7 +4,9 @@
  * This class is used to keep track of the room cells in the game.
  * Also encapsulates the doorDirection attribute
  */
-package com.shanebeestudios.clue.board;
+package com.shanebeestudios.clue.board.cell;
+
+import com.shanebeestudios.clue.board.Board;
 
 import java.awt.Color;
 import java.awt.Graphics;

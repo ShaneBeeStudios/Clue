@@ -2,8 +2,8 @@ package com.shanebeestudios.clue.player;
 
 import com.shanebeestudios.clue.ClueGame;
 import com.shanebeestudios.clue.board.Board;
-import com.shanebeestudios.clue.board.BoardCell;
-import com.shanebeestudios.clue.board.RoomCell;
+import com.shanebeestudios.clue.board.cell.BoardCell;
+import com.shanebeestudios.clue.board.cell.RoomCell;
 import com.shanebeestudios.clue.misc.Card;
 import com.shanebeestudios.clue.misc.Card.CardType;
 import com.shanebeestudios.clue.misc.Solution;

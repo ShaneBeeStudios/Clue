@@ -3,9 +3,9 @@ package com.shanebeestudios.clue.game;
 @SuppressWarnings("unused")
 public enum Rooms {
 
+    // Rooms
     BALLROOM("Ballroom", 'B'),
     BILLIARD_ROOM("Billiard Room", 'R'),
-    CLOSET("Closet", 'X'),
     CONSERVATORY("Conservatory", 'C'),
     DINING_ROOM("Dining Room", 'D'),
     HALL("Hall", 'H'),
@@ -13,7 +13,11 @@ public enum Rooms {
     LIBRARY("Library", 'L'),
     LOUNGE("Lounge", 'O'),
     STUDY("Study", 'S'),
-    WALKWAY("Walkway", 'W');
+
+    // Misc areas
+    CLOSET("Closet", 'X'),
+    WALKWAY("Walkway", 'W'),
+    OUTSIDE("Outside", '_');
 
     private final String name;
     private final Character key;
