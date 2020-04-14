@@ -140,17 +140,26 @@ public class ClueGame extends JFrame {
 
     public void loadPeople() {
         cpuPlayers = new ArrayList<>();
-        String[] peopleSplit;
-        for (Characters character : Characters.values()) {
-            // TODO random player for beginner
-            if (character == Characters.MISS_SCARLETT) {
-                humanPlayer = new HumanPlayer(character.getName(), character.getColor(), character.getXPos(), character.getYPos());
-            } else {
-                cpuPlayers.add(new ComputerPlayer(character.getName(), character.getColor(), character.getXPos(), character.getYPos()));
-            }
+
+        // Create a mutable list of all characters
+        List<Characters> characters = new ArrayList<>();
+        Collections.addAll(characters, Characters.values());
+
+        // Pick a random character for the human player
+        int r = new Random().nextInt(6);
+        Characters random = Characters.values()[r];
+        humanPlayer = new HumanPlayer(random.getName(), random.getColor(), random.getXPos(), random.getYPos());
+        characters.remove(random);
+
+        // Load the rest of the characters as cpu players
+        for (Characters character : characters) {
+            cpuPlayers.add(new ComputerPlayer(character.getName(), character.getColor(), character.getXPos(), character.getYPos()));
         }
+        // Add everyone to the list of all players
         allPlayers.add(humanPlayer);
         allPlayers.addAll(cpuPlayers);
+        JOptionPane.showMessageDialog(game, "You are " + humanPlayer.getName() +  ",\nselect a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE, Icon.CLUE_LOGO);
+
     }
 
     public void loadDeck() {
@@ -364,7 +373,7 @@ public class ClueGame extends JFrame {
     public static void main(String[] args) {
         game = new ClueGame("RoomLayoutNEW.csv");
         game.setVisible(true);
-        JOptionPane.showMessageDialog(game, "You are Miss Scarlet,\nselect a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE, Icon.CLUE_LOGO);
+        //JOptionPane.showMessageDialog(game, "You are Miss Scarlet,\nselect a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE, Icon.CLUE_LOGO);
         game.startHumanTurn();
         game.humanPlayer.makeMove(game.board);
     }
