@@ -8,6 +8,7 @@ import java.awt.*;
 public class Icon {
 
     public static ImageIcon CLUE_LOGO = getScaledIcon("images/clue-logo.png", "main logo", 128, 54);
+    public static ImageIcon CLUE_DOCK = getScaledIcon("images/clue-dock.png", "main logo", 175, 54);
 
     private static ImageIcon createImageIcon(String path, String description) {
         java.net.URL imgURL = ClueGame.class.getClassLoader().getResource(path);

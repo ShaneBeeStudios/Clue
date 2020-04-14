@@ -1,5 +1,6 @@
 package com.shanebeestudios.clue;
 
+import com.apple.eawt.Application;
 import com.shanebeestudios.clue.board.Board;
 import com.shanebeestudios.clue.game.Characters;
 import com.shanebeestudios.clue.game.Icon;
@@ -371,6 +372,12 @@ public class ClueGame extends JFrame {
     }
 
     public static void main(String[] args) {
+        try {
+            Application application = Application.getApplication();
+            Image image = Icon.CLUE_DOCK.getImage();
+            application.setDockIconImage(image);
+            application.setDockIconBadge("Clue");
+        } catch (Exception ignore) {}
         game = new ClueGame("RoomLayoutNEW.csv");
         game.setVisible(true);
         //JOptionPane.showMessageDialog(game, "You are Miss Scarlet,\nselect a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE, Icon.CLUE_LOGO);
