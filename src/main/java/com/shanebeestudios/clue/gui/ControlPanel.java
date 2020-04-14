@@ -1,4 +1,4 @@
-package com.shanebeestudios.clue.misc;
+package com.shanebeestudios.clue.gui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +13,7 @@ import javax.swing.border.TitledBorder;
 
 import com.shanebeestudios.clue.ClueGame;
 import com.shanebeestudios.clue.game.Icon;
-import com.shanebeestudios.clue.misc.SuggestDialog.SuggestType;
+import com.shanebeestudios.clue.gui.SuggestDialog.SuggestType;
 import com.shanebeestudios.clue.player.ComputerPlayer;
 
 

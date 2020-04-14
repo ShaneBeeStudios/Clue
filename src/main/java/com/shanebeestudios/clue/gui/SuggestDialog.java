@@ -1,17 +1,18 @@
-package com.shanebeestudios.clue.misc;
+package com.shanebeestudios.clue.gui;
 
 import com.shanebeestudios.clue.ClueGame;
-import com.shanebeestudios.clue.game.Characters;
+import com.shanebeestudios.clue.board.cell.BoardCell;
+import com.shanebeestudios.clue.game.Card;
+import com.shanebeestudios.clue.game.Character;
 import com.shanebeestudios.clue.game.Icon;
-import com.shanebeestudios.clue.game.Rooms;
-import com.shanebeestudios.clue.game.Weapons;
+import com.shanebeestudios.clue.game.Room;
+import com.shanebeestudios.clue.game.Solution;
+import com.shanebeestudios.clue.game.Weapon;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.*;
-
 
 public class SuggestDialog extends JDialog {
 
@@ -43,23 +44,26 @@ public class SuggestDialog extends JDialog {
         add(new JLabel("  Room"));
         if (t == SuggestType.ACCUSATION) {
             setTitle("Make an Accusation");
-            for (Rooms room : Rooms.values()) {
-                if (room != Rooms.CLOSET && room != Rooms.WALKWAY && room != Rooms.OUTSIDE) {
+            for (Room room : Room.values()) {
+                if (room != Room.CLOSET && room != Room.WALKWAY && room != Room.OUTSIDE) {
                     rooms.addItem(room.getName());
                 }
             }
         } else {
             setTitle("Make a Guess");
-            rooms.addItem(g.getBoard().getRooms().get(g.getBoard().getRoomCellAt(g.getHumanPlayer().getRow(), g.getHumanPlayer().getColumn()).getRoomClassifier()));
+            int row = g.getHumanPlayer().getRow();
+            int col = g.getHumanPlayer().getColumn();
+            BoardCell cell = g.getBoard().getRoomCellAt(row, col);
+            rooms.addItem(cell.getRoom().getName());
         }
         add(rooms);
         add(new JLabel("  Person"));
-        for (Characters character : Characters.values()) {
+        for (Character character : Character.values()) {
             characters.addItem(character.getName());
         }
         add(characters);
         add(new JLabel("  Weapon"));
-        for (Weapons weapon : Weapons.values()) {
+        for (Weapon weapon : Weapon.values()) {
             weapons.addItem(weapon.getName());
         }
         add(weapons);

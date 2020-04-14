@@ -2,16 +2,16 @@ package com.shanebeestudios.clue;
 
 import com.apple.eawt.Application;
 import com.shanebeestudios.clue.board.Board;
-import com.shanebeestudios.clue.game.Characters;
+import com.shanebeestudios.clue.game.CardType;
+import com.shanebeestudios.clue.game.Character;
 import com.shanebeestudios.clue.game.Icon;
-import com.shanebeestudios.clue.game.Rooms;
-import com.shanebeestudios.clue.game.Weapons;
+import com.shanebeestudios.clue.game.Room;
+import com.shanebeestudios.clue.game.Weapon;
 import com.shanebeestudios.clue.gui.DetectiveNotes;
-import com.shanebeestudios.clue.misc.Card;
-import com.shanebeestudios.clue.misc.Card.CardType;
-import com.shanebeestudios.clue.misc.CardPanel;
-import com.shanebeestudios.clue.misc.ControlPanel;
-import com.shanebeestudios.clue.misc.Solution;
+import com.shanebeestudios.clue.game.Card;
+import com.shanebeestudios.clue.gui.CardPanel;
+import com.shanebeestudios.clue.gui.ControlPanel;
+import com.shanebeestudios.clue.game.Solution;
 import com.shanebeestudios.clue.player.ComputerPlayer;
 import com.shanebeestudios.clue.player.HumanPlayer;
 import com.shanebeestudios.clue.player.Player;
@@ -143,17 +143,17 @@ public class ClueGame extends JFrame {
         cpuPlayers = new ArrayList<>();
 
         // Create a mutable list of all characters
-        List<Characters> characters = new ArrayList<>();
-        Collections.addAll(characters, Characters.values());
+        List<Character> characters = new ArrayList<>();
+        Collections.addAll(characters, Character.values());
 
         // Pick a random character for the human player
         int r = new Random().nextInt(6);
-        Characters random = Characters.values()[r];
+        Character random = Character.values()[r];
         humanPlayer = new HumanPlayer(random.getName(), random.getColor(), random.getXPos(), random.getYPos());
         characters.remove(random);
 
         // Load the rest of the characters as cpu players
-        for (Characters character : characters) {
+        for (Character character : characters) {
             cpuPlayers.add(new ComputerPlayer(character.getName(), character.getColor(), character.getXPos(), character.getYPos()));
         }
         // Add everyone to the list of all players
@@ -163,15 +163,15 @@ public class ClueGame extends JFrame {
 
     public void loadDeck() {
         deck = new ArrayList<>();
-        for (Characters character : Characters.values()) {
+        for (Character character : Character.values()) {
             deck.add(new Card(character.getName(), CardType.PERSON));
         }
-        for (Rooms room : Rooms.values()) {
-            if (room != Rooms.CLOSET && room != Rooms.WALKWAY) {
+        for (Room room : Room.values()) {
+            if (room != Room.CLOSET && room != Room.WALKWAY) {
                 deck.add(new Card(room.getName(), CardType.ROOM));
             }
         }
-        for (Weapons weapon : Weapons.values()) {
+        for (Weapon weapon : Weapon.values()) {
             deck.add(new Card(weapon.getName(), CardType.WEAPON));
         }
     }

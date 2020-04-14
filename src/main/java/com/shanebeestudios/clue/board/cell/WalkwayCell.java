@@ -8,6 +8,7 @@
 package com.shanebeestudios.clue.board.cell;
 
 import com.shanebeestudios.clue.board.Board;
+import com.shanebeestudios.clue.game.Room;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,8 +16,8 @@ import java.awt.Graphics;
 // WalkwayCell class body, extending BoardCell
 public class WalkwayCell extends BoardCell {
 
-    public WalkwayCell() {
-        super();
+    public WalkwayCell(Room room) {
+        super(room);
         highlight = false;
     }
 

@@ -14,9 +14,9 @@ import com.shanebeestudios.clue.board.cell.OutsideCell;
 import com.shanebeestudios.clue.board.cell.RoomCell;
 import com.shanebeestudios.clue.board.cell.WalkwayCell;
 import com.shanebeestudios.clue.game.Icon;
-import com.shanebeestudios.clue.game.Rooms;
-import com.shanebeestudios.clue.misc.SuggestDialog;
-import com.shanebeestudios.clue.misc.SuggestDialog.SuggestType;
+import com.shanebeestudios.clue.game.Room;
+import com.shanebeestudios.clue.gui.SuggestDialog;
+import com.shanebeestudios.clue.gui.SuggestDialog.SuggestType;
 import com.shanebeestudios.clue.player.HumanPlayer;
 import com.shanebeestudios.clue.player.Player;
 
@@ -182,7 +182,7 @@ public class Board extends JPanel implements MouseListener {
 	// Throws: BadConfigFormatException
 	// Loads up the legend file, and populates the legend in the board
 	public void loadRoomConfig() {
-		for (Rooms room : Rooms.values()) {
+		for (Room room : Room.values()) {
 		    rooms.put(room.getKey(), room.getName());
         }
 	}
@@ -210,18 +210,19 @@ public class Board extends JPanel implements MouseListener {
 
                 // If the classifier is a w, make a new walkway cell
                 if (value.charAt(0) == 'W') {
-                    cells.add(new WalkwayCell());
+                    cells.add(new WalkwayCell(Room.WALKWAY));
                 }
                 // If the classifier is an underscore, make a new outside cell
                 else if (value.charAt(0) == '_') {
-                    cells.add(new OutsideCell());
+                    cells.add(new OutsideCell(Room.OUTSIDE));
                 }
                 // Otherwise, it must be a room cell, or an invalid cell
                 else {
                     // If we can't find this cell type in the legend, throw an exception
                     if (!rooms.containsKey(value.charAt(0)))
                         throw new BadConfigFormatException("Unrecognized room detected" + value.charAt(0));
-                    cells.add(new RoomCell(value));
+                    char id = (value.length() == 2) ? value.charAt(1) : '_';
+                    cells.add(new RoomCell(Room.getByKey(value.charAt(0)), id));
                 }
             }
 		}

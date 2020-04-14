@@ -1,10 +1,10 @@
-package com.shanebeestudios.clue.misc;
+package com.shanebeestudios.clue.game;
 
 public class Solution {
 
-    private String person;
-    private String weapon;
-    private String room;
+    private final String person;
+    private final String weapon;
+    private final String room;
 
 
     public Solution(String person, String weapon, String room) {
@@ -19,9 +19,7 @@ public class Solution {
             return false;
         if (!this.weapon.equals(weapon))
             return false;
-        if (!this.room.equals(room))
-            return false;
-        return true;
+        return this.room.equals(room);
     }
 
 }

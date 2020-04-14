@@ -1,14 +1,16 @@
-package com.shanebeestudios.clue.misc;
+package com.shanebeestudios.clue.game;
 
-import java.util.Objects;
-
+@SuppressWarnings("unused")
 public class Card {
 
     private String name;
-
-    public enum CardType {PERSON, WEAPON, ROOM}
-
     private CardType type;
+
+    public Card(String name, CardType type) {
+        super();
+        this.name = name;
+        this.type = type;
+    }
 
     public CardType getCardType() {
         return type;
@@ -26,13 +28,7 @@ public class Card {
         this.name = name;
     }
 
-    public Card(String name, CardType type) {
-        super();
-        this.name = name;
-        this.type = type;
-    }
-
-    //overriding the equals function
+    // Overriding the equals function
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -42,7 +38,7 @@ public class Card {
         return result;
     }
 
-    //still overidding the equal function. spell check is for casuals
+    // Still overriding the equal function. spell check is for casuals
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -57,9 +53,7 @@ public class Card {
                 return false;
         } else if (!name.equals(other.name))
             return false;
-        if (type != other.type)
-            return false;
-        return true;
+        return type == other.type;
     }
 
 }

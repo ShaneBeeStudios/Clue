@@ -1,8 +1,8 @@
 package com.shanebeestudios.clue.gui;
 
-import com.shanebeestudios.clue.game.Characters;
-import com.shanebeestudios.clue.game.Rooms;
-import com.shanebeestudios.clue.game.Weapons;
+import com.shanebeestudios.clue.game.Character;
+import com.shanebeestudios.clue.game.Room;
+import com.shanebeestudios.clue.game.Weapon;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -32,7 +32,7 @@ public class DetectiveNotes extends JDialog {
         JPanel people = new JPanel();
         people.setLayout(new GridLayout(3, 3));
         people.setBorder(new TitledBorder(new EtchedBorder(), "People"));
-        for (Characters character : Characters.values()) {
+        for (Character character : Character.values()) {
             people.add(new JCheckBox(character.getName()));
         }
         add(people);
@@ -42,8 +42,8 @@ public class DetectiveNotes extends JDialog {
         JPanel rooms = new JPanel();
         rooms.setLayout(new GridLayout(5, 2));
         rooms.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
-        for (Rooms room : Rooms.values()) {
-            if (room != Rooms.WALKWAY && room != Rooms.OUTSIDE && room != Rooms.CLOSET) {
+        for (Room room : Room.values()) {
+            if (room != Room.WALKWAY && room != Room.OUTSIDE && room != Room.CLOSET) {
                 rooms.add(new JCheckBox(room.getName()));
             }
         }
@@ -54,7 +54,7 @@ public class DetectiveNotes extends JDialog {
         JPanel weapons = new JPanel();
         weapons.setLayout(new GridLayout(3, 3));
         weapons.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
-        for (Weapons weapon : Weapons.values()) {
+        for (Weapon weapon : Weapon.values()) {
             weapons.add(new JCheckBox(weapon.getName()));
         }
         add(weapons);
@@ -65,7 +65,7 @@ public class DetectiveNotes extends JDialog {
         personGuess.setLayout(new BorderLayout());
         JComboBox people = new JComboBox();
         people.addItem("");
-        for (Characters character : Characters.values()) {
+        for (Character character : Character.values()) {
             people.addItem(character.getName());
         }
         personGuess.add(people, BorderLayout.CENTER);
@@ -78,8 +78,8 @@ public class DetectiveNotes extends JDialog {
         roomGuess.setLayout(new BorderLayout());
         JComboBox rooms = new JComboBox();
         rooms.addItem("");
-        for (Rooms room : Rooms.values()) {
-            if (room != Rooms.WALKWAY && room != Rooms.OUTSIDE && room != Rooms.CLOSET) {
+        for (Room room : Room.values()) {
+            if (room != Room.WALKWAY && room != Room.OUTSIDE && room != Room.CLOSET) {
                 rooms.addItem(room.getName());
             }
         }
@@ -93,7 +93,7 @@ public class DetectiveNotes extends JDialog {
         weaponGuess.setLayout(new BorderLayout());
         JComboBox weapons = new JComboBox();
         weapons.addItem("");
-        for (Weapons weapon : Weapons.values()) {
+        for (Weapon weapon : Weapon.values()) {
             weapons.addItem(weapon.getName());
         }
         weaponGuess.add(weapons, BorderLayout.CENTER);

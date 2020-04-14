@@ -1,4 +1,4 @@
-package com.shanebeestudios.clue.misc;
+package com.shanebeestudios.clue.game;
 
 public class Suggestion {
 
@@ -31,13 +31,11 @@ public class Suggestion {
     }
 
     public boolean checkSolution(String person, String weapon, String room) {
-        if (!this.person.equals(person))
+        if (!this.person.getName().equals(person))
             return false;
-        if (!this.weapon.equals(weapon))
+        if (!this.weapon.getName().equals(weapon))
             return false;
-        if (!this.room.equals(room))
-            return false;
-        return true;
+        return this.room.getName().equals(room);
     }
 
 }

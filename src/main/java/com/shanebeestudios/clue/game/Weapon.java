@@ -1,7 +1,7 @@
 package com.shanebeestudios.clue.game;
 
 @SuppressWarnings("unused")
-public enum Weapons {
+public enum Weapon {
 
     REVOLVER("Revolver"),
     CANDLESTICK("Candlestick"),
@@ -12,7 +12,7 @@ public enum Weapons {
 
     private final String name;
 
-    Weapons(String name) {
+    Weapon(String name) {
         this.name = name;
     }
 

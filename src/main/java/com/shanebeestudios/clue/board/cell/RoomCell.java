@@ -7,83 +7,51 @@
 package com.shanebeestudios.clue.board.cell;
 
 import com.shanebeestudios.clue.board.Board;
+import com.shanebeestudios.clue.game.Room;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 
 @SuppressWarnings({"unused", "deprecation"})
 public class RoomCell extends BoardCell {
 
-    private String roomName;
-
-    public enum DoorDirection {
-
-        // Declaration of the enum. Done such that the direction also tells which way the player should move on the com.shanebeestudios.clue.board
-        NONE(0, 0), UP(-1, 0), DOWN(1, 0), LEFT(0, -1), RIGHT(0, 1);
-
-        private final int x;
-        private final int y;
-
-        DoorDirection(int X, int Y) {
-            x = X;
-            y = Y;
-        }
-
-        // Getters for x and y
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-    }
-
     private boolean isDoor = false; // Start with this cell not being a door
-    private DoorDirection doorDirection; // Instantiate a blank door direction
+    private final DoorDirection doorDirection; // Instantiate a blank door direction
     private final char roomClassifier; // Create a blank classifier
     private boolean drawName = false;
 
-    public RoomCell(String roomName) {
+    public RoomCell(Room room, char roomClassifier) {
+        super(room);
+        this.roomClassifier = roomClassifier;
 
         //-------------------------------------
-        this.roomName = roomName;
         highlight = false;
         //-------------------------------
 
-        roomClassifier = roomName.charAt(0);
-        if (roomName.length() == 2 && roomName.charAt(1) != 'N') {
-            isDoor = true; // This cell is a doorway
-
-            // Set the direction based on the second char
-            // U = UP, D = DOWN, L = LEFT, R = RIGHT
-            if (roomName.charAt(1) == 'U') {
+        // Set the direction based on the second char
+        // U = UP, D = DOWN, L = LEFT, R = RIGHT
+        switch (roomClassifier) {
+            case 'U':
                 doorDirection = DoorDirection.UP;
-            } else if (roomName.charAt(1) == 'D') {
+                isDoor = true;
+                break;
+            case 'D':
                 doorDirection = DoorDirection.DOWN;
-            } else if (roomName.charAt(1) == 'L') {
-                doorDirection = DoorDirection.LEFT;
-            } else if (roomName.charAt(1) == 'R') {
+                isDoor = true;
+                break;
+            case 'R':
                 doorDirection = DoorDirection.RIGHT;
-            }
-        } else {
-            if (roomName.length() == 2 && roomName.charAt(1) == 'N') {
+                isDoor = true;
+                break;
+            case 'L':
+                doorDirection = DoorDirection.LEFT;
+                isDoor = true;
+                break;
+            case 'N':
                 drawName = true;
-            }
-            doorDirection = DoorDirection.NONE;
+            default:
+                doorDirection = DoorDirection.NONE;
         }
     }
-
-    //-------------------------------------------------
-    public String getRoomName() {
-        return roomName;
-    }
-
-
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
-    }
-//----------------------------------------------------------
 
     @Override
     public boolean isRoom() {
@@ -99,12 +67,11 @@ public class RoomCell extends BoardCell {
         return doorDirection;
     }
 
-    public char getRoomClassifier() {
-        return roomClassifier;
-    }
+//    public char getRoomClassifier() {
+//        return roomClassifier;
+//    }
 
     @Override
-    //public void draw(Graphics g, Board b, int z, boolean highlight) {
     public void draw(Graphics g, Board b) {
         int doorFraction = 5;
         //int pixelModifier = 25;
@@ -112,7 +79,7 @@ public class RoomCell extends BoardCell {
         int doorOffset = pixelModifier / doorFraction;
         b.setPixelModifier(pixelModifier);
 
-        g.setColor(Color.LIGHT_GRAY);
+        g.setColor(room.getColor());
         if (this.highlight) {
             g.setColor(Color.GREEN);
         }
@@ -129,7 +96,8 @@ public class RoomCell extends BoardCell {
             g.fillRect((column * pixelModifier + pixelModifier) - doorOffset, row * pixelModifier, doorOffset, pixelModifier);
         }
         if (drawName) {
-            g.drawChars(b.getRooms().get(roomClassifier).toCharArray(), 0, b.getRooms().get(roomClassifier).length(), column * pixelModifier, row * pixelModifier);
+            char[] chars = room.getName().toCharArray();
+            g.drawChars(chars, 0, chars.length, column * pixelModifier, row * pixelModifier);
         }
     }
 

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.shanebeestudios.clue.board.Board;
-import com.shanebeestudios.clue.misc.Card;
-import com.shanebeestudios.clue.misc.Card.CardType;
+import com.shanebeestudios.clue.game.Card;
+import com.shanebeestudios.clue.game.CardType;
 
 @SuppressWarnings("unused")
 public class Player {

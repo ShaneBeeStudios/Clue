@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public enum  Characters {
+public enum Character {
 
     MISS_SCARLETT("Miss Scarlet", Color.RED, 1, 17),
     PROFESSOR_PLUM("Professor Plum", Color.MAGENTA, 6, 1),
@@ -20,7 +20,7 @@ public enum  Characters {
     private final int xPos;
     private final int yPos;
 
-    Characters(String name, Color color, int xPos, int yPos) {
+    Character(String name, Color color, int xPos, int yPos) {
         this.name = name;
         this.color = color;
         this.xPos = xPos;
@@ -28,7 +28,7 @@ public enum  Characters {
     }
 
     static {
-        for (Characters character : values()) {
+        for (Character character : values()) {
             NAMES.add(character.name);
         }
     }

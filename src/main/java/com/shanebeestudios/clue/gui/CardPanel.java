@@ -1,6 +1,8 @@
-package com.shanebeestudios.clue.misc;
+package com.shanebeestudios.clue.gui;
 
 import com.shanebeestudios.clue.ClueGame;
+import com.shanebeestudios.clue.game.Card;
+import com.shanebeestudios.clue.game.CardType;
 
 import java.awt.GridLayout;
 
@@ -24,8 +26,8 @@ public class CardPanel extends JPanel {
         JTextArea wcards = new JTextArea();
 
         for (Card c : game.getHumanPlayer().getCards()) {
-            if (c.getCardType() == Card.CardType.PERSON) pcards.append(c.getName() + "\n");
-            else if (c.getCardType() == Card.CardType.ROOM) rcards.append(c.getName() + "\n");
+            if (c.getCardType() == CardType.PERSON) pcards.append(c.getName() + "\n");
+            else if (c.getCardType() == CardType.ROOM) rcards.append(c.getName() + "\n");
             else wcards.append(c.getName() + "\n");
         }
         pcards.setEditable(false);

@@ -4,11 +4,11 @@ import com.shanebeestudios.clue.ClueGame;
 import com.shanebeestudios.clue.board.Board;
 import com.shanebeestudios.clue.board.cell.BoardCell;
 import com.shanebeestudios.clue.board.cell.RoomCell;
+import com.shanebeestudios.clue.game.Card;
+import com.shanebeestudios.clue.game.CardType;
 import com.shanebeestudios.clue.game.Icon;
-import com.shanebeestudios.clue.misc.Card;
-import com.shanebeestudios.clue.misc.Card.CardType;
-import com.shanebeestudios.clue.misc.Solution;
-import com.shanebeestudios.clue.misc.Suggestion;
+import com.shanebeestudios.clue.game.Solution;
+import com.shanebeestudios.clue.game.Suggestion;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,9 +32,10 @@ public class ComputerPlayer extends Player {
         super();
     }
 
+    @SuppressWarnings("SuspiciousMethodCalls")
     public Suggestion createSuggestion(int row, int column, List<Card> deck, Board board) {
         Suggestion suggestion = new Suggestion();
-        String room = board.getRooms().get(board.getRoomCellAt(row, column).getRoomClassifier());
+        String room = board.getRooms().get(board.getRoomCellAt(row, column).getRoom().getName());
         suggestion.setRoom(new Card(room, CardType.ROOM));
         Collections.shuffle(deck);
         suggestion.setPerson(findValidCard(deck, CardType.PERSON));
@@ -57,7 +58,7 @@ public class ComputerPlayer extends Player {
         for (BoardCell selection : targets) {
             if (selection.isRoom()) {
                 RoomCell room = (RoomCell) selection;
-                if (room.getRoomClassifier() != lastRoomVisited) {
+                if (room.getRoom().getKey() != lastRoomVisited) {
                     return selection;
                 }
             }
@@ -86,7 +87,7 @@ public class ComputerPlayer extends Player {
             if (board.getCellAt(getRow(), getColumn()).isRoom()) {
                 // set flag for last room
                 RoomCell room = (RoomCell) board.getCellAt(getRow(), getColumn());
-                lastRoomVisited = room.getRoomClassifier();
+                lastRoomVisited = room.getRoom().getKey();
 
                 // create a suggestion
                 Suggestion s = createSuggestion(getRow(), getColumn(), game.getDeck(), board);

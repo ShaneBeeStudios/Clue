@@ -6,6 +6,7 @@
 package com.shanebeestudios.clue.board.cell;
 
 import com.shanebeestudios.clue.board.Board;
+import com.shanebeestudios.clue.game.Room;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -16,6 +17,11 @@ public abstract class BoardCell {
     protected int row;
     protected int column;
     protected boolean highlight;
+    protected final Room room;
+
+    public BoardCell(Room room) {
+        this.room = room;
+    }
 
     // "is" functions are set to false then overridden in the appropriate cell to suit that cell's needs
     public boolean isWalkway() {
@@ -64,6 +70,10 @@ public abstract class BoardCell {
 
     public void setColumn(int column) {
         this.column = column;
+    }
+
+    public Room getRoom() {
+        return room;
     }
 
     //public abstract void draw(Graphics g, Board b, int z, boolean highlight);
