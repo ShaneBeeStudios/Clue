@@ -12,23 +12,21 @@
 
     <groupId>com.shanebeestudios</groupId>
     <artifactId>Clue</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <repositories>
-        <repository>
-            <!-- Using SpigotMC repo until I find the correct one for junit -->
-            <id>spigotmc-public</id>
-            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-        </repository>
-    </repositories>
+    <version>1.0-SNAPSHOT-2</version>
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13</version>
-            <scope>test</scope>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>18.0.0</version>
+            <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.apple</groupId>
+            <artifactId>AppleJavaExtensions</artifactId>
+            <version>1.4</version>
+        </dependency>
+
     </dependencies>
 
     <build>
