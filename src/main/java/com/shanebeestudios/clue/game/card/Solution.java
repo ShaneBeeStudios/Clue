@@ -1,11 +1,10 @@
-package com.shanebeestudios.clue.game;
+package com.shanebeestudios.clue.game.card;
 
 public class Solution {
 
     private final String person;
     private final String weapon;
     private final String room;
-
 
     public Solution(String person, String weapon, String room) {
         super();

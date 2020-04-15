@@ -1,12 +1,12 @@
 package com.shanebeestudios.clue.player;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.shanebeestudios.clue.board.Board;
-import com.shanebeestudios.clue.game.Card;
-import com.shanebeestudios.clue.game.CardType;
+import com.shanebeestudios.clue.game.card.Card;
+import com.shanebeestudios.clue.game.card.CardType;
+import com.shanebeestudios.clue.game.card.Deck;
+import org.jetbrains.annotations.NotNull;
+
+import java.awt.*;
 
 @SuppressWarnings("unused")
 public class Player {
@@ -15,11 +15,35 @@ public class Player {
     private int column;
     private char room;
     private String name;
-    protected ArrayList<Card> knownCards;
+    protected Deck knownCards;
     private Color color;
-    private ArrayList<Card> cards;
+    private Deck cards;
     private boolean highlight;
     private boolean human;
+
+    public Player(@NotNull String name, @NotNull Color color, int row, int column) {
+        this.row = row;
+        this.column = column;
+        this.name = name;
+        this.color = color;
+        cards = new Deck();
+        knownCards = new Deck();
+        human = false;
+    }
+
+    public Player() {
+        cards = new Deck();
+        knownCards = new Deck();
+        human = false;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(@NotNull String name) {
+        this.name = name;
+    }
 
     public boolean isHuman() {
         return human;
@@ -35,38 +59,6 @@ public class Player {
 
     public void setHighlight(boolean highlight) {
         this.highlight = highlight;
-    }
-
-    public void resetCards() {
-        knownCards = new ArrayList<>();
-        cards = new ArrayList<>();
-    }
-
-    public Player(String name, Color color, int row, int column) {
-        this.row = row;
-        this.column = column;
-        this.name = name;
-        this.color = color;
-        cards = new ArrayList<>();
-        knownCards = new ArrayList<>();
-        human = false;
-    }
-
-    public Player() {
-        cards = new ArrayList<>();
-        knownCards = new ArrayList<>();
-        human = false;
-    }
-
-
-    public Card disproveSuggestion(String person, String room, String weapon) {
-        if (cards.contains(new Card(person, CardType.PERSON)))
-            return cards.get(cards.indexOf(new Card(person, CardType.PERSON)));
-        if (cards.contains(new Card(room, CardType.ROOM)))
-            return cards.get(cards.indexOf(new Card(room, CardType.ROOM)));
-        if (cards.contains(new Card(weapon, CardType.WEAPON)))
-            return cards.get(cards.indexOf(new Card(weapon, CardType.WEAPON)));
-        return null;
     }
 
     public char getRoom() {
@@ -93,33 +85,39 @@ public class Player {
         this.column = column;
     }
 
-    public ArrayList<Card> getCards() {
+    public Deck getCards() {
         return cards;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCards(ArrayList<Card> cards) {
+    public void setCards(@NotNull Deck cards) {
         this.cards = cards;
     }
 
-    public void giveCard(Card card) {
+    public void resetCards() {
+        knownCards = new Deck();
+        cards = new Deck();
+    }
+
+    public void giveCard(@NotNull Card card) {
         cards.add(card);
     }
 
-
-    public List<Card> getKnownCards() {
+    public Deck getKnownCards() {
         return knownCards;
     }
 
-    public void setKnownCards(ArrayList<Card> knownCards) {
+    public void setKnownCards(@NotNull Deck knownCards) {
         this.knownCards = knownCards;
+    }
+
+    public Card disproveSuggestion(String person, String room, String weapon) {
+        if (cards.contains(new Card(person, CardType.PERSON)))
+            return cards.get(cards.indexOf(new Card(person, CardType.PERSON)));
+        if (cards.contains(new Card(room, CardType.ROOM)))
+            return cards.get(cards.indexOf(new Card(room, CardType.ROOM)));
+        if (cards.contains(new Card(weapon, CardType.WEAPON)))
+            return cards.get(cards.indexOf(new Card(weapon, CardType.WEAPON)));
+        return null;
     }
 
     @Override

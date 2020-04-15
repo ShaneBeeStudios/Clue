@@ -12,7 +12,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import com.shanebeestudios.clue.ClueGame;
-import com.shanebeestudios.clue.game.Icon;
 import com.shanebeestudios.clue.gui.SuggestDialog.SuggestType;
 import com.shanebeestudios.clue.player.ComputerPlayer;
 

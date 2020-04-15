@@ -2,16 +2,17 @@ package com.shanebeestudios.clue;
 
 import com.apple.eawt.Application;
 import com.shanebeestudios.clue.board.Board;
-import com.shanebeestudios.clue.game.CardType;
+import com.shanebeestudios.clue.game.card.CardType;
 import com.shanebeestudios.clue.game.Character;
-import com.shanebeestudios.clue.game.Icon;
+import com.shanebeestudios.clue.game.card.Deck;
+import com.shanebeestudios.clue.gui.Icon;
 import com.shanebeestudios.clue.game.Room;
 import com.shanebeestudios.clue.game.Weapon;
 import com.shanebeestudios.clue.gui.DetectiveNotes;
-import com.shanebeestudios.clue.game.Card;
+import com.shanebeestudios.clue.game.card.Card;
 import com.shanebeestudios.clue.gui.CardPanel;
 import com.shanebeestudios.clue.gui.ControlPanel;
-import com.shanebeestudios.clue.game.Solution;
+import com.shanebeestudios.clue.game.card.Solution;
 import com.shanebeestudios.clue.player.ComputerPlayer;
 import com.shanebeestudios.clue.player.HumanPlayer;
 import com.shanebeestudios.clue.player.Player;
@@ -28,8 +29,8 @@ import java.util.Random;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ClueGame extends JFrame {
 
-    private List<Card> deck;
-    private List<Card> closetCards;
+    private Deck deck;
+    private Deck closetCards;
     private List<ComputerPlayer> cpuPlayers;
     private HumanPlayer humanPlayer;
     private Player whosTurn;
@@ -39,7 +40,7 @@ public class ClueGame extends JFrame {
     private final DetectiveNotes notes;
     private static ClueGame game;
     private List<Player> allPlayers;
-    private ControlPanel controlPanel;
+    private final ControlPanel controlPanel;
 
 
     public ClueGame(String layout) {
@@ -53,8 +54,8 @@ public class ClueGame extends JFrame {
         menubar = new JMenuBar();
         setJMenuBar(menubar);
         this.layout = layout;
-        deck = new ArrayList<>();
-        closetCards = new ArrayList<>();
+        deck = new Deck();
+        closetCards = new Deck();
         cpuPlayers = new ArrayList<>();
         allPlayers = new ArrayList<>();
         humanPlayer = new HumanPlayer();
@@ -63,26 +64,6 @@ public class ClueGame extends JFrame {
         controlPanel = new ControlPanel(this);
         loadConfigFiles();
         whosTurn = humanPlayer;
-
-    }
-
-    public ClueGame() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Clue!");
-        setSize(800, 800);
-        this.setVisible(true);
-
-        layout = "RoomLayout.csv";
-        deck = new ArrayList<>();
-        closetCards = new ArrayList<>();
-        cpuPlayers = new ArrayList<>();
-        allPlayers = new ArrayList<>();
-        humanPlayer = new HumanPlayer();
-        board = new Board(layout);
-        menubar = new JMenuBar();
-        notes = new DetectiveNotes();
-        setJMenuBar(menubar);
-        loadConfigFiles();
     }
 
     public boolean isHumanMustFinish() {
@@ -99,13 +80,11 @@ public class ClueGame extends JFrame {
 
     public void loadConfigFiles() {
         loadPeople();
-
         loadDeck();
         deal();
         loadMenuBar();
         board.setPlayers(allPlayers);
         add(board, BorderLayout.CENTER);
-
         add(controlPanel, BorderLayout.SOUTH);
         add(new CardPanel(this), BorderLayout.EAST);
     }
@@ -162,12 +141,12 @@ public class ClueGame extends JFrame {
     }
 
     public void loadDeck() {
-        deck = new ArrayList<>();
+        deck = new Deck();
         for (Character character : Character.values()) {
             deck.add(new Card(character.getName(), CardType.PERSON));
         }
         for (Room room : Room.values()) {
-            if (room != Room.CLOSET && room != Room.WALKWAY) {
+            if (room != Room.CLOSET && room != Room.WALKWAY && room != Room.OUTSIDE) {
                 deck.add(new Card(room.getName(), CardType.ROOM));
             }
         }
@@ -201,7 +180,6 @@ public class ClueGame extends JFrame {
                 i++;
             } else if (i > 0) {
                 cpuPlayers.get(i - 1).giveCard(a);
-                //dave
                 cpuPlayers.get(i - 1).getKnownCards().add(a);
                 i++;
             }
@@ -279,20 +257,20 @@ public class ClueGame extends JFrame {
         return rooms;
     }
 
-    public List<Card> getDeck() {
+    public Deck getDeck() {
         return deck;
     }
 
-    public void setDeck(ArrayList<Card> deck) {
+    public void setDeck(Deck deck) {
         this.deck.clear();
         this.deck = deck;
     }
 
-    public List<Card> getClosetCards() {
+    public Deck getClosetCards() {
         return closetCards;
     }
 
-    public void setClosetCards(ArrayList<Card> closetCards) {
+    public void setClosetCards(Deck closetCards) {
         this.closetCards = closetCards;
     }
 
@@ -372,10 +350,9 @@ public class ClueGame extends JFrame {
     public static void main(String[] args) {
         try {
             Application application = Application.getApplication();
-            Image image = Icon.CLUE_DOCK.getImage();
-            application.setDockIconImage(image);
-            application.setDockIconBadge("Clue");
-        } catch (Exception ignore) {}
+            application.setDockIconImage(Icon.CLUE_DOCK.getImage());
+            application.setDockIconBadge("Clue"); // This doesn't seem to work :(
+        } catch (Throwable ignore) {}
         game = new ClueGame("RoomLayoutNEW.csv");
         game.setVisible(true);
         JOptionPane.showMessageDialog(game, "You are " + game.getHumanPlayer().getName() + ",\nselect a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE, Icon.CLUE_LOGO);

@@ -1,5 +1,7 @@
 package com.shanebeestudios.clue.game;
 
+import com.shanebeestudios.clue.game.card.Card;
+
 public class Suggestion {
 
     private Card person;

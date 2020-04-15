@@ -1,4 +1,4 @@
-package com.shanebeestudios.clue.game;
+package com.shanebeestudios.clue.game.card;
 
 @SuppressWarnings("unused")
 public class Card {

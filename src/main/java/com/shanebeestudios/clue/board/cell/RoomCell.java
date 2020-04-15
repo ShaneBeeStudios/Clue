@@ -16,12 +16,10 @@ public class RoomCell extends BoardCell {
 
     private boolean isDoor = false; // Start with this cell not being a door
     private final DoorDirection doorDirection; // Instantiate a blank door direction
-    private final char roomClassifier; // Create a blank classifier
     private boolean drawName = false;
 
     public RoomCell(Room room, char roomClassifier) {
         super(room);
-        this.roomClassifier = roomClassifier;
 
         //-------------------------------------
         highlight = false;

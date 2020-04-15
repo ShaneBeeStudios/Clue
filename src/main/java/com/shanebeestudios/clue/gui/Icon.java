@@ -1,10 +1,11 @@
-package com.shanebeestudios.clue.game;
+package com.shanebeestudios.clue.gui;
 
 import com.shanebeestudios.clue.ClueGame;
 
 import javax.swing.*;
 import java.awt.*;
 
+@SuppressWarnings("unused")
 public class Icon {
 
     public static ImageIcon CLUE_LOGO = getScaledIcon("images/clue-logo.png", "main logo", 128, 54);

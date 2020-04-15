@@ -1,8 +1,8 @@
 package com.shanebeestudios.clue.gui;
 
 import com.shanebeestudios.clue.ClueGame;
-import com.shanebeestudios.clue.game.Card;
-import com.shanebeestudios.clue.game.CardType;
+import com.shanebeestudios.clue.game.card.Card;
+import com.shanebeestudios.clue.game.card.CardType;
 
 import java.awt.GridLayout;
 

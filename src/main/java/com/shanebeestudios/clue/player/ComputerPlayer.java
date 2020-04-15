@@ -4,26 +4,29 @@ import com.shanebeestudios.clue.ClueGame;
 import com.shanebeestudios.clue.board.Board;
 import com.shanebeestudios.clue.board.cell.BoardCell;
 import com.shanebeestudios.clue.board.cell.RoomCell;
-import com.shanebeestudios.clue.game.Card;
-import com.shanebeestudios.clue.game.CardType;
-import com.shanebeestudios.clue.game.Icon;
-import com.shanebeestudios.clue.game.Solution;
+import com.shanebeestudios.clue.game.card.Card;
+import com.shanebeestudios.clue.game.card.CardType;
+import com.shanebeestudios.clue.game.card.Deck;
+import com.shanebeestudios.clue.game.Room;
+import com.shanebeestudios.clue.game.card.Solution;
 import com.shanebeestudios.clue.game.Suggestion;
+import com.shanebeestudios.clue.gui.Icon;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 public class ComputerPlayer extends Player {
 
-    private char lastRoomVisited;
+    private Room lastRoomVisited;
     private Suggestion accusation;
 
-    public ComputerPlayer(String name, Color color, int row, int column) {
+    public ComputerPlayer(@NotNull String name, @NotNull Color color, int row, int column) {
         super(name, color, row, column);
         accusation = null;
     }
@@ -32,19 +35,18 @@ public class ComputerPlayer extends Player {
         super();
     }
 
-    @SuppressWarnings("SuspiciousMethodCalls")
-    public Suggestion createSuggestion(int row, int column, List<Card> deck, Board board) {
+    public Suggestion createSuggestion(int row, int column, Deck deck, Board board) {
         Suggestion suggestion = new Suggestion();
-        String room = board.getRooms().get(board.getRoomCellAt(row, column).getRoom().getName());
-        suggestion.setRoom(new Card(room, CardType.ROOM));
+        Room room = board.getRoomCellAt(getRow(), getColumn()).getRoom();
+        suggestion.setRoom(new Card(room.getName(), CardType.ROOM));
         Collections.shuffle(deck);
         suggestion.setPerson(findValidCard(deck, CardType.PERSON));
         suggestion.setWeapon(findValidCard(deck, CardType.WEAPON));
         return suggestion;
     }
 
-    public Card findValidCard(List<Card> deck, CardType type) {
-        List<Card> knownCards = this.getKnownCards();
+    public Card findValidCard(Deck deck, CardType type) {
+        Deck knownCards = this.getKnownCards();
         for (Card x : deck) {
             if (x.getCardType().equals(type) && !knownCards.contains(x)) {
                 return x;
@@ -54,11 +56,10 @@ public class ComputerPlayer extends Player {
     }
 
     public BoardCell pickLocation(Set<BoardCell> targets) {
-
         for (BoardCell selection : targets) {
             if (selection.isRoom()) {
                 RoomCell room = (RoomCell) selection;
-                if (room.getRoom().getKey() != lastRoomVisited) {
+                if (room.getRoom() != lastRoomVisited) {
                     return selection;
                 }
             }
@@ -87,7 +88,7 @@ public class ComputerPlayer extends Player {
             if (board.getCellAt(getRow(), getColumn()).isRoom()) {
                 // set flag for last room
                 RoomCell room = (RoomCell) board.getCellAt(getRow(), getColumn());
-                lastRoomVisited = room.getRoom().getKey();
+                lastRoomVisited = room.getRoom();
 
                 // create a suggestion
                 Suggestion s = createSuggestion(getRow(), getColumn(), game.getDeck(), board);
@@ -97,12 +98,16 @@ public class ComputerPlayer extends Player {
 
                 // update control panel
                 game.getControlPanel().getGuesstext().setText(s.getPerson().getName() + " " + s.getRoom().getName() + " " + s.getWeapon().getName());
+                game.getControlPanel().getResponse().setText(" ");
+                /* Why exactly would we be showing this to the human player?
+                // Lets hold onto this just in case
                 if (disprove != null) {
                     game.getControlPanel().getResponse().setText(disprove.getName());
                 } else {
                     game.getControlPanel().getResponse().setText("no response");
                     accusation = s;
                 }
+                 */
             }
             board.repaint();
         }
@@ -122,15 +127,15 @@ public class ComputerPlayer extends Player {
         knownCards.add(seen);
     }
 
-    public void updateSeen(ArrayList<Card> seen) {
+    public void updateSeen(List<Card> seen) {
         knownCards.addAll(seen);
     }
 
-    public char getLastRoomVisited() {
+    public Room getLastRoomVisited() {
         return lastRoomVisited;
     }
 
-    public void setLastRoomVisited(char lastRoomVisited) {
+    public void setLastRoomVisited(Room lastRoomVisited) {
         this.lastRoomVisited = lastRoomVisited;
     }
 

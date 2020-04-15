@@ -13,7 +13,7 @@ import com.shanebeestudios.clue.board.cell.BoardCell;
 import com.shanebeestudios.clue.board.cell.OutsideCell;
 import com.shanebeestudios.clue.board.cell.RoomCell;
 import com.shanebeestudios.clue.board.cell.WalkwayCell;
-import com.shanebeestudios.clue.game.Icon;
+import com.shanebeestudios.clue.gui.Icon;
 import com.shanebeestudios.clue.game.Room;
 import com.shanebeestudios.clue.gui.SuggestDialog;
 import com.shanebeestudios.clue.gui.SuggestDialog.SuggestType;

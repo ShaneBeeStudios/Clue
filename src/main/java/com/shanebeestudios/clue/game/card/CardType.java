@@ -1,4 +1,4 @@
-package com.shanebeestudios.clue.game;
+package com.shanebeestudios.clue.game.card;
 
 public enum CardType {
 

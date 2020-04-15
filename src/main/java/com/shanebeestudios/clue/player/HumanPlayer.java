@@ -1,6 +1,7 @@
 package com.shanebeestudios.clue.player;
 
 import com.shanebeestudios.clue.board.Board;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -8,7 +9,7 @@ public class HumanPlayer extends Player {
 
     private boolean canMakeAccusation;
 
-    public HumanPlayer(String name, Color color, int row, int column) {
+    public HumanPlayer(@NotNull String name, @NotNull Color color, int row, int column) {
         super(name, color, row, column);
         canMakeAccusation = true;
     }
@@ -22,7 +23,7 @@ public class HumanPlayer extends Player {
         this.canMakeAccusation = canMakeAccusation;
     }
 
-    public void makeMove(Board board) {
+    public void makeMove(@NotNull Board board) {
         board.highlightTargets(this.getRow(), this.getColumn());
     }
 

@@ -2,11 +2,10 @@ package com.shanebeestudios.clue.gui;
 
 import com.shanebeestudios.clue.ClueGame;
 import com.shanebeestudios.clue.board.cell.BoardCell;
-import com.shanebeestudios.clue.game.Card;
+import com.shanebeestudios.clue.game.card.Card;
 import com.shanebeestudios.clue.game.Character;
-import com.shanebeestudios.clue.game.Icon;
 import com.shanebeestudios.clue.game.Room;
-import com.shanebeestudios.clue.game.Solution;
+import com.shanebeestudios.clue.game.card.Solution;
 import com.shanebeestudios.clue.game.Weapon;
 
 import javax.swing.*;
